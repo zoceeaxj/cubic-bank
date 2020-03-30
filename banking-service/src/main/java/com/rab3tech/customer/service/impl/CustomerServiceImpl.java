@@ -1,10 +1,56 @@
 package com.rab3tech.customer.service.impl;
 
-import org.springframework.stereotype.Service;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.rab3tech.admin.dao.repository.CustomerRepository;
+import com.rab3tech.customer.dao.repository.RoleRepository;
 import com.rab3tech.customer.service.CustomerService;
+import com.rab3tech.dao.entity.Customer;
+import com.rab3tech.dao.entity.Login;
+import com.rab3tech.dao.entity.Role;
+import com.rab3tech.utils.PasswordGenerator;
+import com.rab3tech.vo.CustomerVO;
 
 @Service
+@Transactional
 public class CustomerServiceImpl implements  CustomerService{
+	
+	@Autowired
+	private CustomerRepository customerRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	@Override
+	public CustomerVO createAccount(CustomerVO customerVO) {
+		Customer pcustomer = new Customer();
+		BeanUtils.copyProperties(customerVO, pcustomer);
+		Login login = new Login();
+		login.setNoOfAttempt(3);
+		login.setLoginid(customerVO.getEmail());
+		login.setName(customerVO.getName());
+		login.setPassword(PasswordGenerator.generateRandomPassword(8));
+		login.setToken(customerVO.getToken());
+		login.setLocked("no");
+		
+		Role entity=roleRepository.findById(3).get();
+		Set<Role> roles=new HashSet<>();
+		roles.add(entity);
+		//setting roles inside login
+		login.setRoles(roles);
+		//setting login inside
+		pcustomer.setLogin(login);
+		Customer dcustomer=customerRepository.save(pcustomer);
+		customerVO.setId(dcustomer.getId());
+		customerVO.setUserid(customerVO.getUserid());
+		customerVO.setPassword(login.getPassword());
+		return customerVO;
+	}
 
 }

@@ -59,21 +59,31 @@
                     </select>
                     </td>
                      <td>Father Name</td>
-                    <td><input type="text" class="form-control" name="name" id="" /></td>
+                    <td>
+                       <input type="text" class="form-control" th:field="*{father}"/>
+                   </td>
                 </tr>
                 
                  <tr>
                     <td>Qualification:</td>
-                    <td><input type="text" class="form-control" name="name" id="name" /></td>
-                     <td>Father Name</td>
-                    <td><input type="text" class="form-control" name="name" id="name" /></td>
+                     <td>
+                      <select  class="form-control" th:field="*{qualification}">
+                        <option value="B.TECH">B.TECH</option>
+                        <option value="BSC">BSC</option>
+                         <option value="M.TECH">M.TECH</option>
+                         <option value="MCA">MCA</option>
+                    </select>
+                     </td>
+                     
+                    <td> DOB</td>
+                    <td>
+                    <input type="text" class="form-control" th:field="*{dob}"/>
                 </tr>
-                
                 <tr>
                  <td>&nbsp;</td>
                   <td>&nbsp;</td>
                     <td colspan="2">
-                    <button type="button" class="btn btn-primary">Save & Submit</button>
+                    <button type="submit" class="btn btn-primary">Save & Submit</button>
                      <a href="javascript:showRoles();"><img th:src="@{/images/roles.png}" class="img-responsive center-block" width="56"  alt="Logo" /></a>
                     </td>
                 </tr>

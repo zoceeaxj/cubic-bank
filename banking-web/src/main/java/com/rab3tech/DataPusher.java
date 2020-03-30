@@ -10,8 +10,10 @@ import org.springframework.stereotype.Component;
 
 import com.rab3tech.admin.dao.repository.AccountStatusRepository;
 import com.rab3tech.admin.dao.repository.AccountTypeRepository;
+import com.rab3tech.customer.dao.repository.RoleRepository;
 import com.rab3tech.dao.entity.AccountStatus;
 import com.rab3tech.dao.entity.AccountType;
+import com.rab3tech.dao.entity.Role;
 
 @Component
 public class DataPusher implements CommandLineRunner {
@@ -21,6 +23,10 @@ public class DataPusher implements CommandLineRunner {
 	
 	@Autowired
 	private AccountTypeRepository accountTypeRepository;
+	
+	
+	@Autowired
+	private RoleRepository roleRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -52,6 +58,23 @@ public class DataPusher implements CommandLineRunner {
 			accountTypes.add(accountType4);
 			
 			accountTypeRepository.saveAll(accountTypes);
+			
+		}
+		
+		Optional<Role> optional3=roleRepository.findById(1);
+		if(!optional3.isPresent()) {
+			Role role1=new Role(1,"ROLE_ADMIN","ROLE_ADMIN");
+			Role role2=new Role(2,"ROLE_EMPLOYEE","ROLE_EMPLOYEE");
+			Role role3=new Role(3,"ROLE_CUSTOMER","ROLE_CUSTOMER");
+			Role role4=new Role(4,"ROLE_MANAGER","ROLE_MANAGER");
+			
+			List<Role> roles=new ArrayList<>();
+			roles.add(role1);
+			roles.add(role2);
+			roles.add(role3);
+			roles.add(role4);
+			
+			roleRepository.saveAll(roles);
 			
 		}
 	}

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.rab3tech.customer.service.CustomerService;
 import com.rab3tech.customer.service.impl.CustomerEnquiryService;
 import com.rab3tech.vo.CustomerSavingVO;
 import com.rab3tech.vo.CustomerVO;
@@ -19,6 +20,9 @@ public class CustomerUIController {
 	
 	@Autowired
 	private CustomerEnquiryService customerEnquiryService;
+	
+	@Autowired
+	private CustomerService customerService;
 	
 	
 	//http://localhost:444/customer/account/registration?cuid=1585a34b5277-dab2-475a-b7b4-042e032e8121603186515
@@ -46,6 +50,9 @@ public class CustomerUIController {
 
 	@PostMapping("/customer/account/registration")
 	public String createCustomer(@ModelAttribute CustomerVO customerVO,Model model) {
+		    //saving customer into database
+		    customerService.createAccount(customerVO);
+		    //Write code to send email
 			System.out.println(customerVO);
 			model.addAttribute("message","Your account has been setup successfully , please check your email.");
 			return "login";	

@@ -22,7 +22,16 @@ public class Role {
 	private String description;
 	
 	private Set<Login> logins;
+	
+	public Role() {}
 		
+	public Role(int rid, String name, String description) {
+		super();
+		this.rid = rid;
+		this.name = name;
+		this.description = description;
+	}
+
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "rid"), inverseJoinColumns = @JoinColumn(name = "loginid"))
 	public Set<Login> getLogins() {
