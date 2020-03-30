@@ -131,12 +131,13 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	
 	@Override
 	public Optional<CustomerSavingVO> findCustomerEnquiryByUuid(String ucrid) {
-		Optional<CustomerSaving> customerSavingEntity = customerAccountEnquiryRepository.findByUcrid(ucrid);
-		if(customerSavingEntity.isPresent()) {
+		Optional<CustomerSaving> ocustomerSavingEntity = customerAccountEnquiryRepository.findByUcrid(ucrid);
+		if(ocustomerSavingEntity.isPresent()) {
 			CustomerSavingVO customerSavingVO = new CustomerSavingVO();
+			CustomerSaving customerSavingEntity=ocustomerSavingEntity.get();
 			BeanUtils.copyProperties(customerSavingEntity, customerSavingVO, new String[] { "accType", "status" });
-			customerSavingVO.setAccType(customerSavingEntity.get().getAccType().getName());
-			customerSavingVO.setStatus(customerSavingEntity.get().getStatus().getName());
+			customerSavingVO.setAccType(customerSavingEntity.getAccType().getName());
+			customerSavingVO.setStatus(customerSavingEntity.getStatus().getName());
 			return Optional.of(customerSavingVO);	
 		}else {
 			return Optional.empty();
