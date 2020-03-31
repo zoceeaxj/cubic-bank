@@ -33,7 +33,7 @@ public class CustomerUIController {
 		Optional<CustomerSavingVO>  optional=customerEnquiryService.findCustomerEnquiryByUuid(cuid);
 		CustomerVO customerVO=new CustomerVO();
 		
-		if(optional.isEmpty()) {
+		if(optional.isPresent()) {
 			return "error";	
 		}else {
 			//model is used to carry data from controller to the view =- JSP/
