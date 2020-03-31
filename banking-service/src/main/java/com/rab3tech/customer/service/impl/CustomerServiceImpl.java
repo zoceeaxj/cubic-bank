@@ -21,8 +21,8 @@ import com.rab3tech.vo.CustomerVO;
 @Transactional
 public class CustomerServiceImpl implements  CustomerService{
 	
-	@Autowired
-	private CustomerRepository customerRepository;
+	//@Autowired
+	//private CustomerRepository customerRepository;
 	
 	@Autowired
 	private RoleRepository roleRepository;
@@ -46,8 +46,8 @@ public class CustomerServiceImpl implements  CustomerService{
 		login.setRoles(roles);
 		//setting login inside
 		pcustomer.setLogin(login);
-		Customer dcustomer=customerRepository.save(pcustomer);
-		customerVO.setId(dcustomer.getId());
+		//Customer dcustomer=customerRepository.save(pcustomer);
+		//customerVO.setId(dcustomer.getId());
 		customerVO.setUserid(customerVO.getUserid());
 		customerVO.setPassword(login.getPassword());
 		return customerVO;

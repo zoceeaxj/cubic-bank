@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.rab3tech.customer.service.CustomerService;
 import com.rab3tech.customer.service.impl.CustomerEnquiryService;
+import com.rab3tech.service.exception.BankServiceException;
 import com.rab3tech.vo.CustomerSavingVO;
 import com.rab3tech.vo.CustomerVO;
 
@@ -20,6 +21,7 @@ public class CustomerUIController {
 	
 	@Autowired
 	private CustomerEnquiryService customerEnquiryService;
+	
 	
 	@Autowired
 	private CustomerService customerService;
@@ -57,4 +59,27 @@ public class CustomerUIController {
 			model.addAttribute("message","Your account has been setup successfully , please check your email.");
 			return "login";	
 	}
+	
+	
+	@GetMapping(value= {"/customer/account/enquiry","/","/mocha","/welcome"})
+	public String showCustomerEnquiryPage(Model model) {
+		    CustomerSavingVO customerSavingVO=new CustomerSavingVO();
+		    //model is map which is used to carry object from controller to view
+		    model.addAttribute("customerSavingVO",customerSavingVO);
+			return "customer/customerEnquiry";	//customerEnquiry.html
+	}	
+	
+	@PostMapping("/customer/account/enquiry")
+	public String submitEnquiryData(@ModelAttribute CustomerSavingVO customerSavingVO,Model model) {
+			    boolean status=customerEnquiryService.emailNotExist(customerSavingVO.getEmail());
+				if(status) {
+					CustomerSavingVO  response=customerEnquiryService.save(customerSavingVO);
+					model.addAttribute("message","Hey Customer , your enquiry form has been submitted successfully!!! and appref "+response.getAppref());
+				}else {
+					model.addAttribute("message", "Sorry , this email is already in use "+customerSavingVO.getEmail());
+				}
+				return "customer/success";	//customerEnquiry.html
+			
+	}	
+
 }
