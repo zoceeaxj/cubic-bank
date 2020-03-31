@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.rab3tech.customer.service.CustomerService;
 import com.rab3tech.customer.service.impl.CustomerEnquiryService;
-import com.rab3tech.service.exception.BankServiceException;
 import com.rab3tech.vo.CustomerSavingVO;
 import com.rab3tech.vo.CustomerVO;
 
