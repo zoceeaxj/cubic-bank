@@ -1,22 +1,35 @@
 package com.rab3tech;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rab3tech.admin.dao.repository.AccountStatusRepository;
 import com.rab3tech.admin.dao.repository.AccountTypeRepository;
+import com.rab3tech.admin.dao.repository.CustomerRepository;
+import com.rab3tech.customer.dao.repository.LoginRepository;
 import com.rab3tech.customer.dao.repository.RoleRepository;
 import com.rab3tech.dao.entity.AccountStatus;
 import com.rab3tech.dao.entity.AccountType;
+import com.rab3tech.dao.entity.Customer;
+import com.rab3tech.dao.entity.Login;
 import com.rab3tech.dao.entity.Role;
 
 @Component
 public class DataPusher implements CommandLineRunner {
+	
+	@Value("${spring.mail.username:javatech1000@gmail.com}")
+	private String empUsername;
 	
 	@Autowired
 	private AccountStatusRepository accountStatusRepository;
@@ -26,9 +39,16 @@ public class DataPusher implements CommandLineRunner {
 	
 	
 	@Autowired
+	private CustomerRepository customerRepository;
+	
+	@Autowired
+	private LoginRepository loginRepository;
+	
+	@Autowired
 	private RoleRepository roleRepository;
 	
 	@Override
+	@Transactional
 	public void run(String... args) throws Exception {
 		Optional<AccountStatus> optional1=accountStatusRepository.findById(1);
 		if(!optional1.isPresent()) {
@@ -75,7 +95,39 @@ public class DataPusher implements CommandLineRunner {
 			roles.add(role4);
 			
 			roleRepository.saveAll(roles);
-			
 		}
+		Optional<Login> optional=loginRepository.findByLoginid(empUsername);
+		if(!optional.isPresent()) {
+			Customer pcustomer = new Customer();
+			pcustomer.setAddress("Fremont");
+			pcustomer.setName("James Robert");
+			pcustomer.setMobile("320432043");
+			pcustomer.setGender("Male");
+			pcustomer.setJobTitle("Bank Employee");
+			pcustomer.setSsn("23432");
+			pcustomer.setFather("Mr. Jack");
+			pcustomer.setQualification("NA");
+			pcustomer.setDom(new Timestamp(new Date().getTime()));
+			pcustomer.setDob("12-03-2020");
+			pcustomer.setDoe(new Timestamp(new Date().getTime()));
+			pcustomer.setEmail(empUsername);
+			Login login = new Login();
+			login.setNoOfAttempt(3);
+			login.setLoginid(pcustomer.getEmail());
+			login.setName(pcustomer.getName());
+			login.setPassword("cool@123$");
+			login.setToken("2230303");
+			login.setLocked("no");
+			
+			Role entity=roleRepository.findById(2).get();
+			Set<Role> roles=new HashSet<>();
+			roles.add(entity);
+			//setting roles inside login
+			login.setRoles(roles);
+			//setting login inside
+			pcustomer.setLogin(login);
+			customerRepository.save(pcustomer);
+		}
+		
 	}
 }

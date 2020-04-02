@@ -21,6 +21,7 @@ import com.rab3tech.dao.entity.AccountType;
 import com.rab3tech.dao.entity.CustomerSaving;
 import com.rab3tech.email.service.EmailService;
 import com.rab3tech.service.exception.BankServiceException;
+import com.rab3tech.utils.AccountStatusEnum;
 import com.rab3tech.utils.Utils;
 import com.rab3tech.vo.CustomerSavingVO;
 import com.rab3tech.vo.EmailVO;
@@ -83,6 +84,13 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	@Override
 	public List<CustomerSavingVO> findAll() {
 		List<CustomerSaving> customerSavingList = customerAccountEnquiryRepository.findAll();
+		return convertEntityIntoVO(customerSavingList);
+	}
+	
+	// DRY
+	@Override
+	public List<CustomerSavingVO> findPendingEnquiry() {
+		List<CustomerSaving> customerSavingList = customerAccountEnquiryRepository.findPendingEnquiries(AccountStatusEnum.PENDING.name());
 		return convertEntityIntoVO(customerSavingList);
 	}
 

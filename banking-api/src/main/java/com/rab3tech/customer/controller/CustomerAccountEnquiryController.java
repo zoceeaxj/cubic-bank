@@ -44,6 +44,12 @@ public class CustomerAccountEnquiryController {
 		return responses;
 	}
 	
+	@GetMapping("/customers/enquiry/pending")
+	public List<CustomerSavingVO> getAllPendingEnquiry() {
+		List<CustomerSavingVO>  responses=customerEnquiryService.findPendingEnquiry();
+		return responses;
+	}
+	
 	@GetMapping(value="/customers/enquiry/{csaid}")
 	public CustomerSavingVO getEnquiry(@PathVariable int csaid) {
 		CustomerSavingVO  response=customerEnquiryService.findById(csaid);

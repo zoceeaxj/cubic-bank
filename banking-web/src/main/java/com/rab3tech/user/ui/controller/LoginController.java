@@ -34,7 +34,19 @@ public class LoginController {
 				LoginVO  loginVO2=optional.get();
 				loginVO2.setPassword("*@&@&^@^&@^@");
 				session.setAttribute("userSessionVO", loginVO2);
-				return "customer/dashboard";	//dashboard.html
+				String viewName="";
+				switch (loginVO2.getRoles().get(0)) {
+					case "ROLE_EMPLOYEE":
+						viewName ="employee/dashboard";
+						break;
+					case "ROLE_CUSTOMER":
+						viewName ="customer/dashboard";
+						break;
+					default:
+						viewName ="guest";
+						break;
+				}
+				return viewName;	//dashboard.html
 			}else {
 				model.addAttribute("error","Sorry , your username and password are not valid!");
 				return "customer/login";	//login.html

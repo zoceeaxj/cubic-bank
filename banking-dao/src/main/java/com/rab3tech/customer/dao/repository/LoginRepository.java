@@ -16,6 +16,6 @@ import com.rab3tech.dao.entity.Login;
 public interface LoginRepository extends JpaRepository<Login, Integer> {
 	
 	public Optional<Login> findByLoginidAndPassword(String loginid,String password);
-	
+	public Optional<Login> findByLoginid(String loginid);
 }
 

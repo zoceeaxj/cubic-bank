@@ -14,6 +14,7 @@ import com.rab3tech.customer.service.CustomerService;
 import com.rab3tech.customer.service.impl.CustomerEnquiryService;
 import com.rab3tech.vo.CustomerSavingVO;
 import com.rab3tech.vo.CustomerVO;
+import com.rab3tech.vo.LoginVO;
 
 @Controller
 public class CustomerUIController {
@@ -32,8 +33,8 @@ public class CustomerUIController {
 		Optional<CustomerSavingVO>  optional=customerEnquiryService.findCustomerEnquiryByUuid(cuid);
 		CustomerVO customerVO=new CustomerVO();
 		
-		if(optional.isPresent()) {
-			return "error";	
+		if(!optional.isPresent()) {
+			return "customer/error";	
 		}else {
 			//model is used to carry data from controller to the view =- JSP/
 			CustomerSavingVO customerSavingVO=optional.get();
@@ -55,8 +56,9 @@ public class CustomerUIController {
 		    customerService.createAccount(customerVO);
 		    //Write code to send email
 			System.out.println(customerVO);
+			model.addAttribute("loginVO", new LoginVO());
 			model.addAttribute("message","Your account has been setup successfully , please check your email.");
-			return "login";	
+			return "customer/login";	
 	}
 	
 	
