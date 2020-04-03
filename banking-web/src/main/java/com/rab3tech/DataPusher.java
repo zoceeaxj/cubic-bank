@@ -19,11 +19,13 @@ import com.rab3tech.admin.dao.repository.AccountTypeRepository;
 import com.rab3tech.admin.dao.repository.CustomerRepository;
 import com.rab3tech.customer.dao.repository.LoginRepository;
 import com.rab3tech.customer.dao.repository.RoleRepository;
+import com.rab3tech.customer.dao.repository.SecurityQuestionsRepository;
 import com.rab3tech.dao.entity.AccountStatus;
 import com.rab3tech.dao.entity.AccountType;
 import com.rab3tech.dao.entity.Customer;
 import com.rab3tech.dao.entity.Login;
 import com.rab3tech.dao.entity.Role;
+import com.rab3tech.dao.entity.SecurityQuestions;
 
 @Component
 public class DataPusher implements CommandLineRunner {
@@ -37,6 +39,10 @@ public class DataPusher implements CommandLineRunner {
 	@Autowired
 	private AccountTypeRepository accountTypeRepository;
 	
+	
+	@Autowired
+	private 	SecurityQuestionsRepository securityQuestionsRepository;
+
 	
 	@Autowired
 	private CustomerRepository customerRepository;
@@ -127,6 +133,33 @@ public class DataPusher implements CommandLineRunner {
 			//setting login inside
 			pcustomer.setLogin(login);
 			customerRepository.save(pcustomer);
+		}
+		
+		Optional<SecurityQuestions> seOptional=securityQuestionsRepository.findById(1);
+		if(!seOptional.isPresent()) {
+			SecurityQuestions securityQuestions1=new SecurityQuestions (1,"What is your birth place?");
+			SecurityQuestions securityQuestions2=new SecurityQuestions (2,"What is your mother's maiden name?");
+			SecurityQuestions securityQuestions3=new SecurityQuestions (3,"What is your favourite author's name?");
+			SecurityQuestions securityQuestions4=new SecurityQuestions (4,"What is your pet name?");
+			SecurityQuestions securityQuestions5=new SecurityQuestions (5,"What is your favourite soccer team?");
+			SecurityQuestions securityQuestions6=new SecurityQuestions (6,"What is the name of your childhood hero?");
+			SecurityQuestions securityQuestions7=new SecurityQuestions (7,"What is your father's middle name?");
+			SecurityQuestions securityQuestions8=new SecurityQuestions (8,"What is the name of your first crush?");
+			SecurityQuestions securityQuestions9=new SecurityQuestions (9,"What was the name of your first school?");
+			SecurityQuestions securityQuestions10=new SecurityQuestions (10,"What is your favourite vacation spot?");
+			
+			List<SecurityQuestions> securityQuestions=new ArrayList<>();
+			securityQuestions.add(securityQuestions1);
+			securityQuestions.add(securityQuestions2);
+			securityQuestions.add(securityQuestions3);
+			securityQuestions.add(securityQuestions4);
+			securityQuestions.add(securityQuestions5);
+			securityQuestions.add(securityQuestions6);
+			securityQuestions.add(securityQuestions7);
+			securityQuestions.add(securityQuestions8);
+			securityQuestions.add(securityQuestions9);
+			securityQuestions.add(securityQuestions10);
+			securityQuestionsRepository.saveAll(securityQuestions);
 		}
 		
 	}

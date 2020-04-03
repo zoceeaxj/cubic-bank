@@ -2,6 +2,8 @@ package com.rab3tech.customer.ui.controller;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,8 @@ import com.rab3tech.vo.LoginVO;
 @Controller
 public class CustomerUIController {
 	
+    private static final Logger logger = LoggerFactory.getLogger(CustomerUIController.class);
+	
 	@Autowired
 	private CustomerEnquiryService customerEnquiryService;
 	
@@ -30,6 +34,8 @@ public class CustomerUIController {
 	//http://localhost:444/customer/account/registration?cuid=1585a34b5277-dab2-475a-b7b4-042e032e8121603186515
 	@GetMapping("/customer/account/registration")
 	public String showCustomerRegistrationPage(@RequestParam String cuid,Model model) {
+		
+		logger.debug("cuid = "+cuid);
 		Optional<CustomerSavingVO>  optional=customerEnquiryService.findCustomerEnquiryByUuid(cuid);
 		CustomerVO customerVO=new CustomerVO();
 		
@@ -43,6 +49,7 @@ public class CustomerUIController {
 			customerVO.setMobile(customerSavingVO.getMobile());
 			customerVO.setAddress(customerSavingVO.getLocation());
 			customerVO.setToken(cuid);
+			logger.debug(customerSavingVO.toString());
 			//model - is hash map which is used to carry data from controller to thyme leaf!!!!!
 			// model is similar to request scope in jsp and servlet
 			model.addAttribute("customerVO",customerVO);
@@ -53,6 +60,7 @@ public class CustomerUIController {
 	@PostMapping("/customer/account/registration")
 	public String createCustomer(@ModelAttribute CustomerVO customerVO,Model model) {
 		    //saving customer into database
+			logger.debug(customerVO.toString());
 		    customerService.createAccount(customerVO);
 		    //Write code to send email
 			System.out.println(customerVO);
@@ -73,8 +81,10 @@ public class CustomerUIController {
 	@PostMapping("/customer/account/enquiry")
 	public String submitEnquiryData(@ModelAttribute CustomerSavingVO customerSavingVO,Model model) {
 			    boolean status=customerEnquiryService.emailNotExist(customerSavingVO.getEmail());
+			    logger.info("Executing submitEnquiryData");
 				if(status) {
 					CustomerSavingVO  response=customerEnquiryService.save(customerSavingVO);
+					logger.debug("Hey Customer , your enquiry form has been submitted successfully!!! and appref "+response.getAppref());
 					model.addAttribute("message","Hey Customer , your enquiry form has been submitted successfully!!! and appref "+response.getAppref());
 				}else {
 					model.addAttribute("message", "Sorry , this email is already in use "+customerSavingVO.getEmail());

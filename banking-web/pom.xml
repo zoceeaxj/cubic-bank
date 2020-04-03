@@ -8,13 +8,21 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>banking-web</artifactId>
-
+ <packaging>jar</packaging>
 	<properties>
 		<java.version>1.8</java.version>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
 	</properties>
 
 	<dependencies>
+	
+	<!-- marked the embedded servlet container as provided -->
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-tomcat</artifactId>
+		<scope>provided</scope>
+	</dependency>
+	
 		<dependency>
 			<groupId>com.rab3tech</groupId>
 			<artifactId>banking-service</artifactId>
@@ -51,4 +59,23 @@
 		</dependency>
 
 	</dependencies>
+	
+	 <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <layout>ZIP</layout>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
