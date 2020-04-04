@@ -25,6 +25,29 @@ public class LoginServiceImpl implements LoginService {
 	private LoginRepository loginRepository;
 	
 	@Override
+	public Optional<LoginVO> findUserByUsername(String loginid) {
+		LoginVO loginVO =new LoginVO();
+		loginVO.setUsername(loginid);
+		Optional<Login>  optional=loginRepository.findByLoginid(loginid);
+		if(optional.isPresent()) {
+			Login login=optional.get();
+			loginVO.setEmail(login.getEmail());
+			loginVO.setPassword(login.getPassword());
+			Set<Role> rolesSet=login.getRoles();
+			List<String> roleList=new ArrayList<>();
+			//List<String> roles= rolesSet.stream().map(Role::getName).collect(Collectors.toList());
+			for(Role role:rolesSet) {
+				roleList.add(role.getName());
+			}
+			loginVO.setRoles(roleList);
+			return Optional.of(loginVO);
+		}else {
+			return Optional.empty();
+		}
+	}
+	
+	
+	@Override
 	public Optional<LoginVO> authUser(LoginVO loginVO) {
 		Optional<Login>  optional=loginRepository.findByLoginidAndPassword(loginVO.getUsername(), loginVO.getPassword());
 		if(optional.isPresent()) {

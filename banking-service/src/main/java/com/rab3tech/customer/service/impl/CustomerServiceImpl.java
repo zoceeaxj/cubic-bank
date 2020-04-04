@@ -5,10 +5,11 @@ import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.rab3tech.admin.dao.repository.CustomerRepository;
+import com.rab3tech.admin.dao.repository.MagicCustomerRepository;
 import com.rab3tech.customer.dao.repository.RoleRepository;
 import com.rab3tech.customer.service.CustomerService;
 import com.rab3tech.dao.entity.Customer;
@@ -22,10 +23,13 @@ import com.rab3tech.vo.CustomerVO;
 public class CustomerServiceImpl implements  CustomerService{
 	
 	@Autowired
-	private CustomerRepository customerRepository;
+	private MagicCustomerRepository customerRepository;
 	
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Override
 	public CustomerVO createAccount(CustomerVO customerVO) {
@@ -35,7 +39,7 @@ public class CustomerServiceImpl implements  CustomerService{
 		login.setNoOfAttempt(3);
 		login.setLoginid(customerVO.getEmail());
 		login.setName(customerVO.getName());
-		login.setPassword(PasswordGenerator.generateRandomPassword(8));
+		login.setPassword(bCryptPasswordEncoder.encode(PasswordGenerator.generateRandomPassword(8)));
 		login.setToken(customerVO.getToken());
 		login.setLocked("no");
 		

@@ -8,4 +8,6 @@ public interface LoginService {
 
 	Optional<LoginVO> authUser(LoginVO loginVO);
 
+	Optional<LoginVO> findUserByUsername(String loginid);
+
 }

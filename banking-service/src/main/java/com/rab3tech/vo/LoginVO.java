@@ -11,6 +11,15 @@ public class LoginVO {
 	private List<String> roles;
 	private String name;
 	private String salutation;
+	private String locked;
+	
+	public String getLocked() {
+		return locked;
+	}
+
+	public void setLocked(String locked) {
+		this.locked = locked;
+	}
 
 	public String getPassword() {
 		return password;
