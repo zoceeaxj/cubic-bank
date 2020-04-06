@@ -15,6 +15,7 @@ import com.rab3tech.customer.service.CustomerService;
 import com.rab3tech.dao.entity.Customer;
 import com.rab3tech.dao.entity.Login;
 import com.rab3tech.dao.entity.Role;
+import com.rab3tech.email.service.EmailService;
 import com.rab3tech.utils.PasswordGenerator;
 import com.rab3tech.vo.CustomerVO;
 
@@ -31,6 +32,7 @@ public class CustomerServiceImpl implements  CustomerService{
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
+	
 	@Override
 	public CustomerVO createAccount(CustomerVO customerVO) {
 		Customer pcustomer = new Customer();
@@ -39,7 +41,9 @@ public class CustomerServiceImpl implements  CustomerService{
 		login.setNoOfAttempt(3);
 		login.setLoginid(customerVO.getEmail());
 		login.setName(customerVO.getName());
-		login.setPassword(bCryptPasswordEncoder.encode(PasswordGenerator.generateRandomPassword(8)));
+		String genPassword=PasswordGenerator.generateRandomPassword(8);
+		customerVO.setPassword(genPassword);
+		login.setPassword(bCryptPasswordEncoder.encode(genPassword));
 		login.setToken(customerVO.getToken());
 		login.setLocked("no");
 		
@@ -53,7 +57,6 @@ public class CustomerServiceImpl implements  CustomerService{
 		Customer dcustomer=customerRepository.save(pcustomer);
 		customerVO.setId(dcustomer.getId());
 		customerVO.setUserid(customerVO.getUserid());
-		customerVO.setPassword(login.getPassword());
 		return customerVO;
 	}
 

@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.rab3tech.customer.service.CustomerService;
 import com.rab3tech.customer.service.impl.CustomerEnquiryService;
+import com.rab3tech.email.service.EmailService;
 import com.rab3tech.vo.CustomerSavingVO;
 import com.rab3tech.vo.CustomerVO;
+import com.rab3tech.vo.EmailVO;
 import com.rab3tech.vo.LoginVO;
 
 @Controller
@@ -30,6 +32,8 @@ public class CustomerUIController {
 	@Autowired
 	private CustomerService customerService;
 	
+	   @Autowired
+		private EmailService emailService;
 	
 	//http://localhost:444/customer/account/registration?cuid=1585a34b5277-dab2-475a-b7b4-042e032e8121603186515
 	@GetMapping("/customer/account/registration")
@@ -61,8 +65,13 @@ public class CustomerUIController {
 	public String createCustomer(@ModelAttribute CustomerVO customerVO,Model model) {
 		    //saving customer into database
 			logger.debug(customerVO.toString());
-		    customerService.createAccount(customerVO);
+			customerVO=customerService.createAccount(customerVO);
 		    //Write code to send email
+		    
+		    EmailVO mail=new EmailVO(customerVO.getEmail(),"javahunk2020@gmail.com","Regarding Customer "+customerVO.getName()+"  userid and password","",customerVO.getName());
+		    mail.setUsername(customerVO.getUserid());
+		    mail.setPassword(customerVO.getPassword());
+		    emailService.sendUsernamePasswordEmail(mail);
 			System.out.println(customerVO);
 			model.addAttribute("loginVO", new LoginVO());
 			model.addAttribute("message","Your account has been setup successfully , please check your email.");

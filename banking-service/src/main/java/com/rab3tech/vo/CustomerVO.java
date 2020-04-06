@@ -259,6 +259,8 @@ public class CustomerVO {
 	public void setAccountNum(String accountNum) {
 		this.accountNum = accountNum;
 	}
+	
+	
 
 	@Override
 	public String toString() {

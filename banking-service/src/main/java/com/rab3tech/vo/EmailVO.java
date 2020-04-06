@@ -7,6 +7,8 @@ public class EmailVO {
 	private String subject;
 	private String body;
 	private String registrationlink;
+	private String username;
+	private String password;
 	
 	public EmailVO() {}
 
@@ -16,6 +18,24 @@ public class EmailVO {
 		this.subject = subject;
 		this.name=name;
 		this.body = body;
+	}
+	
+	
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getRegistrationlink() {

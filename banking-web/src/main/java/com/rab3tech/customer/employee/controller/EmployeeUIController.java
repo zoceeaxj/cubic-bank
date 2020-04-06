@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.rab3tech.customer.service.impl.CustomerEnquiryService;
 import com.rab3tech.email.service.EmailService;
 import com.rab3tech.utils.BankHttpUtils;
-import com.rab3tech.vo.ApplicationResponseVO;
 import com.rab3tech.vo.CustomerSavingVO;
 import com.rab3tech.vo.EmailVO;
 
@@ -36,7 +36,9 @@ public class EmployeeUIController {
 	@Autowired
 	private EmailService emailService;
 	
+	
 	@GetMapping(value= {"/customer/enquiries"})
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
 	public String showCustomerEnquiry(Model model) {
 		logger.info("showCustomerEnquiry is called!!!");
 		List<CustomerSavingVO> pendingApplications = customerEnquiryService.findPendingEnquiry();

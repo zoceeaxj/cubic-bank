@@ -6,6 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.rab3tech.dao.entity.AccountStatus;
 
+/**
+ * 
+ * @author nagendra
+ *
+ */
 public interface AccountStatusRepository extends JpaRepository<AccountStatus, Integer> {
 	
 	public Optional<AccountStatus> findByName(String name);

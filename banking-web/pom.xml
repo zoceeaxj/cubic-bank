@@ -29,6 +29,12 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		
+				<dependency>
+			<groupId>com.rab3tech</groupId>
+			<artifactId>banking-dao</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.rab3tech</groupId>
 			<artifactId>banking-api</artifactId>
@@ -60,7 +66,7 @@
 
 	</dependencies>
 	
-	 <build>
+	 <!-- <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -77,5 +83,5 @@
                 </executions>
             </plugin>
         </plugins>
-    </build>
+    </build> -->
 </project>

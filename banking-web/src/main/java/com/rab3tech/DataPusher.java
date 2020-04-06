@@ -11,12 +11,13 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rab3tech.admin.dao.repository.AccountStatusRepository;
 import com.rab3tech.admin.dao.repository.AccountTypeRepository;
-import com.rab3tech.admin.dao.repository.CustomerRepository;
+import com.rab3tech.admin.dao.repository.MagicCustomerRepository;
 import com.rab3tech.customer.dao.repository.LoginRepository;
 import com.rab3tech.customer.dao.repository.RoleRepository;
 import com.rab3tech.customer.dao.repository.SecurityQuestionsRepository;
@@ -37,6 +38,9 @@ public class DataPusher implements CommandLineRunner {
 	private AccountStatusRepository accountStatusRepository;
 	
 	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired
 	private AccountTypeRepository accountTypeRepository;
 	
 	
@@ -45,7 +49,7 @@ public class DataPusher implements CommandLineRunner {
 
 	
 	@Autowired
-	private CustomerRepository customerRepository;
+	private MagicCustomerRepository customerRepository;
 	
 	@Autowired
 	private LoginRepository loginRepository;
@@ -89,10 +93,10 @@ public class DataPusher implements CommandLineRunner {
 		
 		Optional<Role> optional3=roleRepository.findById(1);
 		if(!optional3.isPresent()) {
-			Role role1=new Role(1,"ROLE_ADMIN","ROLE_ADMIN");
-			Role role2=new Role(2,"ROLE_EMPLOYEE","ROLE_EMPLOYEE");
-			Role role3=new Role(3,"ROLE_CUSTOMER","ROLE_CUSTOMER");
-			Role role4=new Role(4,"ROLE_MANAGER","ROLE_MANAGER");
+			Role role1=new Role(1,"ADMIN","ADMIN");
+			Role role2=new Role(2,"EMPLOYEE","EMPLOYEE");
+			Role role3=new Role(3,"CUSTOMER","CUSTOMER");
+			Role role4=new Role(4,"MANAGER","MANAGER");
 			
 			List<Role> roles=new ArrayList<>();
 			roles.add(role1);
@@ -121,7 +125,7 @@ public class DataPusher implements CommandLineRunner {
 			login.setNoOfAttempt(3);
 			login.setLoginid(pcustomer.getEmail());
 			login.setName(pcustomer.getName());
-			login.setPassword("cool@123$");
+			login.setPassword(bCryptPasswordEncoder.encode("cool@123$"));
 			login.setToken("2230303");
 			login.setLocked("no");
 			
