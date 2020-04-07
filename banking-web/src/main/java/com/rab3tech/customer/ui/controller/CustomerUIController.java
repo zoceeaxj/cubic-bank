@@ -20,6 +20,12 @@ import com.rab3tech.vo.CustomerVO;
 import com.rab3tech.vo.EmailVO;
 import com.rab3tech.vo.LoginVO;
 
+/**
+ * 
+ * @author nagendra
+ * This class for customer GUI
+ *
+ */
 @Controller
 public class CustomerUIController {
 
