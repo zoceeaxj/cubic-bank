@@ -38,7 +38,7 @@ public class LoginController {
 
 	@GetMapping(value= {"/access/denied"})
 	public String accessDenied(Model model) {
-			return "customer/accessDenied";	//login.html
+			return "customer/accessDenied";	//accessDenied.html
 	}	
 	
 	@GetMapping(value= {"/customer/dashboard"})
