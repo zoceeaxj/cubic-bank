@@ -1,6 +1,6 @@
 package com.rab3tech;
 
-public class Mocha {
+public class Mocha extends Object {
 	
 	public MochaService mochaService=new MochaService();
 	
