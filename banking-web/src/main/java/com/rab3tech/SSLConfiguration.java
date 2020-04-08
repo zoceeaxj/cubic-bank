@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class SSLConfiguration {
 	
 	  // spring boot 2.x
-    @Bean
+    /*@Bean
     public ServletWebServerFactory servletContainer() {
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
             @Override
@@ -37,6 +37,6 @@ public class SSLConfiguration {
         connector.setSecure(false);
         connector.setRedirectPort(8443);
         return connector;
-    }
+    }*/
 
 }
