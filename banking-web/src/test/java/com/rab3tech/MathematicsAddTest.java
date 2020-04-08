@@ -48,6 +48,13 @@ public class MathematicsAddTest {
     }
 	
 	@Test
+    public void testAddWhenNum12AndNum2() {
+            int result = mathematics.add(2,2);
+            assertEquals(4,result);
+        	verify(mathService, times(0)).magic(2,2);
+    }
+	
+	@Test
     public void testAddWhenNum1OrNum4Not4() {
             int result = mathematics.add(2,45);
             assertEquals(47,result);
