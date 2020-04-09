@@ -106,7 +106,7 @@ public class CustomerAccountEnquiryControllerTest {
 	public	void testGetEnquiryByIdWhenExist() throws Exception {
 		 CustomerSavingVO customerSavingVO=new CustomerSavingVO(122,"nagendra","nagen@gmail.com","02390","NA","Saving","Appoved","C9393",null,"A435");
 		 when(customerEnquiryService.findById(122)).thenReturn(customerSavingVO);
-	 	 mockMvc.perform(MockMvcRequestBuilders.get("/customers/enquiry/"+122)
+	 	 mockMvc.perform(MockMvcRequestBuilders.get("/v3/customers/enquiry/"+122)
      	 			 .accept(MediaType.APPLICATION_JSON))
 		 			.andExpect(jsonPath("$.name").exists())
 		 			.andExpect(jsonPath("$.email").exists())
