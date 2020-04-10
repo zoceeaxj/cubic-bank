@@ -163,8 +163,8 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		for (CustomerSaving customerSavingEntity : customerSavingList) {
 			CustomerSavingVO customerSavingVO = new CustomerSavingVO();
 			BeanUtils.copyProperties(customerSavingEntity, customerSavingVO, new String[] { "accType", "status" });
-			customerSavingVO.setAccType(customerSavingEntity.getAccType().getName());
-			customerSavingVO.setStatus(customerSavingEntity.getStatus().getName());
+			customerSavingVO.setAccType(customerSavingEntity.getAccType()!=null?customerSavingEntity.getAccType().getName():null);
+			customerSavingVO.setStatus(customerSavingEntity.getStatus()!=null?customerSavingEntity.getStatus().getName():null);
 			customerSavingVOList.add(customerSavingVO);
 		}
 		return customerSavingVOList;

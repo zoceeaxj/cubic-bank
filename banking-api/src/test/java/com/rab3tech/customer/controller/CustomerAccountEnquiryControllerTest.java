@@ -7,7 +7,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -26,8 +24,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.rab3tech.customer.service.impl.CustomerEnquiryService;
 import com.rab3tech.test.TestUtil;
@@ -100,6 +96,8 @@ public class CustomerAccountEnquiryControllerTest {
 	 			.andExpect(jsonPath("$.name").value("nagendra"))
 	 			.andExpect(jsonPath("$.email").value("nagen@gmail.com"))
 	 			.andDo(print());
+		 verify(customerEnquiryService, times(1)).save(customerSavingVO);
+	     verifyNoMoreInteractions(customerEnquiryService);
 	}
 	
 	@Test

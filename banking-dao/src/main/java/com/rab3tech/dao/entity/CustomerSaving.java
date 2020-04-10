@@ -35,7 +35,24 @@ public class CustomerSaving {
 	private String appref;
 	
 	
+	public CustomerSaving() {}
 	
+	
+	public CustomerSaving(int csaid, String name, String email, String mobile, String location, String ucrid,
+			AccountType accType, AccountStatus status, Date doa, String appref) {
+		super();
+		this.csaid = csaid;
+		this.name = name;
+		this.email = email;
+		this.mobile = mobile;
+		this.location = location;
+		this.ucrid = ucrid;
+		this.accType = accType;
+		this.status = status;
+		this.doa = doa;
+		this.appref = appref;
+	}
+
 	@Column(length=30)
 	public String getAppref() {
 		return appref;

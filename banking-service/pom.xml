@@ -19,13 +19,13 @@
 			<artifactId>banking-dao</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		
-			<!-- https://mvnrepository.com/artifact/junit/junit -->
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<scope>test</scope>
-			</dependency>
+
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 
 		<!-- This is to send email using spring boot -->
@@ -56,7 +56,19 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>2.18.0</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 </project>
