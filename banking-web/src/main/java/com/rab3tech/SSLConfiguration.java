@@ -9,7 +9,7 @@ import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+/*@Configuration
 public class SSLConfiguration {
 	
 	  // spring boot 2.x
@@ -39,4 +39,4 @@ public class SSLConfiguration {
         return connector;
     }
 
-}
+}*/
