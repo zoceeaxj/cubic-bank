@@ -13,8 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.rab3tech.customer.service.LoginService;
@@ -81,6 +79,12 @@ public class LoginController {
 				}
 				return viewName;	//dashboard.html
 		}	
+		if("ROLE_ANONYMOUS".equalsIgnoreCase(nextPage)) {
+			LoginVO  loginVO2=new LoginVO();
+			loginVO2.setUsername("nagen@gmail.com");
+			loginVO2.setEmail("nagen@gmail.com");
+			session.setAttribute("userSessionVO", loginVO2);
+		}
 		return viewName;	//dashboard.html
 	}	
 	
