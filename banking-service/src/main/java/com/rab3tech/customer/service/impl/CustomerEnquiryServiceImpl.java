@@ -15,6 +15,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import com.rab3tech.admin.dao.repository.AccountStatusRepository;
 import com.rab3tech.admin.dao.repository.AccountTypeRepository;
+import com.rab3tech.aop.advice.TimeLogger;
 import com.rab3tech.customer.dao.repository.CustomerAccountEnquiryRepository;
 import com.rab3tech.dao.entity.AccountStatus;
 import com.rab3tech.dao.entity.AccountType;
@@ -47,6 +48,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	private String fromEmail;
 
 	@Override
+	@TimeLogger
 	public CustomerSavingVO save(CustomerSavingVO customerSavingVO) {
 		customerSavingVO.setDoa(new Date());
 		customerSavingVO.setAppref("AS-" + Utils.genRandomAlphaNum());
@@ -82,6 +84,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 
 	// DRY
 	@Override
+	@TimeLogger
 	public List<CustomerSavingVO> findAll() {
 		List<CustomerSaving> customerSavingList = customerAccountEnquiryRepository.findAll();
 		return convertEntityIntoVO(customerSavingList);
@@ -89,12 +92,14 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	
 	// DRY
 	@Override
+	@TimeLogger
 	public List<CustomerSavingVO> findPendingEnquiry() {
 		List<CustomerSaving> customerSavingList = customerAccountEnquiryRepository.findPendingEnquiries(AccountStatusEnum.PENDING.name());
 		return convertEntityIntoVO(customerSavingList);
 	}
 
 	@Override
+	@TimeLogger
 	public boolean emailNotExist(String email) {
 		Optional<CustomerSaving> optional = customerAccountEnquiryRepository.findByEmail(email);
 		if(optional.isPresent()) {
@@ -106,13 +111,17 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	
 	
 	@Override
+	@TimeLogger
 	public String updateEnquiryRegId(int csaid,String ucrid) {
 		CustomerSaving customerSavingEntity = customerAccountEnquiryRepository.findById(csaid).get();
 		customerSavingEntity.setUcrid(ucrid);
 		return "done";
 	}
 
+	
+
 	@Override
+	@TimeLogger
 	public CustomerSavingVO findById(int csaid) {
 		CustomerSaving customerSavingEntity = customerAccountEnquiryRepository.findById(csaid).get();
 		CustomerSavingVO customerSavingVO = new CustomerSavingVO();
@@ -123,6 +132,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	}
 	
 	@Override
+	@TimeLogger
 	public CustomerSavingVO changeEnquiryStatus(int csaid,String status) {
 		CustomerSaving customerSavingEntity = customerAccountEnquiryRepository.findById(csaid).get();
 		//status = APPROVED
@@ -138,6 +148,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	}
 	
 	@Override
+	@TimeLogger
 	public Optional<CustomerSavingVO> findCustomerEnquiryByUuid(String ucrid) {
 		Optional<CustomerSaving> ocustomerSavingEntity = customerAccountEnquiryRepository.findByUcrid(ucrid);
 		if(ocustomerSavingEntity.isPresent()) {
@@ -154,6 +165,7 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 	
 
 	@Override
+	@TimeLogger
 	public void deleteById(int csaid) {
 		customerAccountEnquiryRepository.deleteById(csaid);
 	}
