@@ -32,6 +32,7 @@ public class LoginServiceImpl implements LoginService {
 			Login login=optional.get();
 			loginVO.setEmail(login.getEmail());
 			loginVO.setPassword(login.getPassword());
+			loginVO.setLlt(login.getLlt());
 			Set<Role> rolesSet=login.getRoles();
 			List<String> roleList=new ArrayList<>();
 			//List<String> roles= rolesSet.stream().map(Role::getName).collect(Collectors.toList());

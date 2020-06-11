@@ -2,6 +2,8 @@ package com.rab3tech.customer.ui.controller;
 
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import com.rab3tech.customer.service.CustomerService;
 import com.rab3tech.customer.service.impl.CustomerEnquiryService;
 import com.rab3tech.email.service.EmailService;
 import com.rab3tech.vo.CustomerSavingVO;
+import com.rab3tech.vo.CustomerSecurityQueAnsVO;
 import com.rab3tech.vo.CustomerVO;
 import com.rab3tech.vo.EmailVO;
 import com.rab3tech.vo.LoginVO;
@@ -39,6 +42,14 @@ public class CustomerUIController {
 
 	@Autowired
 	private EmailService emailService;
+	
+	@PostMapping("/customer/securityQuestion")
+	public String saveCustomerQuestions(@ModelAttribute CustomerSecurityQueAnsVO customerSecurityQueAnsVO, Model model,HttpSession session) {
+		LoginVO  loginVO2=(LoginVO)session.getAttribute("userSessionVO");
+		String userid=loginVO2.getEmail();
+		//
+		return "customer/chagePassword";
+	}
 
 	// http://localhost:444/customer/account/registration?cuid=1585a34b5277-dab2-475a-b7b4-042e032e8121603186515
 	@GetMapping("/customer/account/registration")
