@@ -83,6 +83,11 @@ public class LoginController {
 							List<SecurityQuestionsVO> questionsVOs=securityQuestionService.findAll();
 							Collections.shuffle(questionsVOs);
 							customerSecurityQueAnsVO.setQuestionsVOs(questionsVOs);
+							
+							List<SecurityQuestionsVO> questionsVOs1=questionsVOs.subList(0, questionsVOs.size()/2);
+							List<SecurityQuestionsVO> questionsVOs2=questionsVOs.subList(questionsVOs.size()/2,questionsVOs.size());
+							model.addAttribute("questionsVOs1", questionsVOs1);
+							model.addAttribute("questionsVOs2", questionsVOs2);
 							model.addAttribute("customerSecurityQueAnsVO", customerSecurityQueAnsVO);
 						}
 						break;

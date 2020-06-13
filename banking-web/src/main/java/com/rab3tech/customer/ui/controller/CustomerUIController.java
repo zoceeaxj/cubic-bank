@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.rab3tech.customer.service.CustomerService;
+import com.rab3tech.customer.service.LoginService;
 import com.rab3tech.customer.service.impl.CustomerEnquiryService;
+import com.rab3tech.customer.service.impl.SecurityQuestionService;
 import com.rab3tech.email.service.EmailService;
+import com.rab3tech.vo.ChangePasswordVO;
 import com.rab3tech.vo.CustomerSavingVO;
 import com.rab3tech.vo.CustomerSecurityQueAnsVO;
 import com.rab3tech.vo.CustomerVO;
@@ -37,16 +40,48 @@ public class CustomerUIController {
 	@Autowired
 	private CustomerEnquiryService customerEnquiryService;
 
+	
+	@Autowired
+	private SecurityQuestionService securityQuestionService;
+	
+	
 	@Autowired
 	private CustomerService customerService;
 
 	@Autowired
 	private EmailService emailService;
 	
-	@PostMapping("/customer/securityQuestion")
-	public String saveCustomerQuestions(@ModelAttribute CustomerSecurityQueAnsVO customerSecurityQueAnsVO, Model model,HttpSession session) {
+	@Autowired
+   private LoginService loginService;	
+	
+	@PostMapping("/customer/changePassword")
+	public String saveCustomerQuestions(@ModelAttribute ChangePasswordVO changePasswordVO, Model model,HttpSession session) {
 		LoginVO  loginVO2=(LoginVO)session.getAttribute("userSessionVO");
-		String userid=loginVO2.getEmail();
+		String loginid=loginVO2.getUsername();
+		changePasswordVO.setLoginid(loginid);
+		String viewName ="customer/dashboard";
+		boolean status=loginService.checkPasswordValid(loginid,changePasswordVO.getCurrentPassword());
+		if(status) {
+			if(changePasswordVO.getNewPassword().equals(changePasswordVO.getConfirmPassword())) {
+				 viewName ="customer/dashboard";
+				 loginService.changePassword(changePasswordVO);
+			}else {
+				model.addAttribute("error","Sorry , your new password and confirm passwords are not same!");
+				return "customer/login";	//login.html	
+			}
+		}else {
+			model.addAttribute("error","Sorry , your username and password are not valid!");
+			return "customer/login";	//login.html	
+		}
+		return viewName;
+	}
+	
+	@PostMapping("/customer/securityQuestion")
+	public String saveCustomerQuestions(@ModelAttribute("customerSecurityQueAnsVO") CustomerSecurityQueAnsVO customerSecurityQueAnsVO, Model model,HttpSession session) {
+		LoginVO  loginVO2=(LoginVO)session.getAttribute("userSessionVO");
+		String loginid=loginVO2.getUsername();
+		customerSecurityQueAnsVO.setLoginid(loginid);
+		securityQuestionService.save(customerSecurityQueAnsVO);
 		//
 		return "customer/chagePassword";
 	}

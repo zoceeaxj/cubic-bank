@@ -7,7 +7,18 @@ public class CustomerSecurityQueAnsVO {
 	private String securityQuestion2;
 	private String securityQuestionAnswer2;
 	private String securityQuestionAnswer1;
+	private String loginid;
 	
+	
+	
+	public String getLoginid() {
+		return loginid;
+	}
+
+	public void setLoginid(String loginid) {
+		this.loginid = loginid;
+	}
+
 	List<SecurityQuestionsVO> questionsVOs;
 
 	public String getSecurityQuestion1() {
