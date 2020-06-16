@@ -94,25 +94,17 @@
     <td>
     
      <a  th:onclick="|toggleStatus('${questionsVO.status}',${questionsVO.qid})|" style="cursor: pointer;">
-     <span th:utext="${questionsVO.status}" style="color: black;font-size: 18px;"></span></a>
-    </td>
-    
-    
-    <td>
-    <!-- <form th:action="@{/customers/enquiry/approve}" th:method="post">
-    <button type="submit" th:name="csaid" th:value="${applicant.csaid}" class="btn btn-success">Approve</button>
-    </form> --> 
-    </td>
-    <td>
-<!--     <form th:action="@{/v3/customers/enquiry/deny}" th:method="post">
-    <button type="submit" th:name="csaid" th:value="${applicant.csaid}" class="btn btn-danger">Deny</button>
-    </form> -->
+
+      <button type="button" th:name="csaid" th:value="${questionsVO.status}" class="btn btn-primary">    
+       <span th:utext="${questionsVO.status}" style="color: black;font-size: 18px;"></span></button>
+     </a>
     </td>
     
   </tr>
   </tbody>
   </table>
-  
+  <br/>
+  <hr/>
   </div>
 </div>
 <footer  class="ffooter">
