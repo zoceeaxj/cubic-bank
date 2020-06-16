@@ -7,5 +7,7 @@ import com.rab3tech.vo.SecurityQuestionsVO;
 public interface CustomerSecurityQuestionsService {
 
 	List<SecurityQuestionsVO> findSecurityQuestions();
+	void updateStatus(String status, int qid);
+	void addSecurityQuestion(String question, String loginid);
 
 }

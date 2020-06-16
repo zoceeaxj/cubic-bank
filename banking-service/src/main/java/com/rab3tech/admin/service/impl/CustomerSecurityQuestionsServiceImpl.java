@@ -1,6 +1,8 @@
 package com.rab3tech.admin.service.impl;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -20,6 +22,17 @@ public class CustomerSecurityQuestionsServiceImpl  implements CustomerSecurityQu
 	@Autowired
 	private CustomerSecurityQuestionsRepository customerSecurityQuestionsDao;
 	
+	@Override
+	public void updateStatus(String status,int qid) {
+		//entity is loaded inside session - persistence context
+		SecurityQuestions securityQuestions=customerSecurityQuestionsDao.findById(qid).get();
+		if("yes".equalsIgnoreCase(status)) {
+			status="no";
+		}else {
+			status="yes";
+		}
+		securityQuestions.setStatus(status);
+	}
 	
 	@Override
 	public List<SecurityQuestionsVO> findSecurityQuestions() {
@@ -32,8 +45,11 @@ public class CustomerSecurityQuestionsServiceImpl  implements CustomerSecurityQu
 		}
 		return questionsVOs;
 	}
-	
-	
-	
+
+	@Override
+	public void addSecurityQuestion(String question, String loginid) {
+		SecurityQuestions securityQuestions=new SecurityQuestions (0,question,"yes",loginid,new Timestamp(new Date().getTime()),new Timestamp(new Date().getTime()));
+		customerSecurityQuestionsDao.save(securityQuestions);
+	}
 
 }
