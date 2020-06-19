@@ -67,11 +67,13 @@ public class DataPusher implements CommandLineRunner {
 			AccountStatus accountStatus3=new AccountStatus(3,"AS03","DORMANT","DORMANT");
 			AccountStatus accountStatus4=new AccountStatus(4,"AS04","APPROVED","APPROVED");
 			AccountStatus accountStatus5=new AccountStatus(5,"AS05","ACTIVE","ACTIVE");
+			AccountStatus accountStatus6=new AccountStatus(6,"AS06","REGISTERED","REGISTERED");
 			accountStatusRepository.save(accountStatus1);
 			accountStatusRepository.save(accountStatus2);
 			accountStatusRepository.save(accountStatus3);
 			accountStatusRepository.save(accountStatus4);
 			accountStatusRepository.save(accountStatus5);
+			accountStatusRepository.save(accountStatus6);
 		}
 		
 		Optional<AccountType> optional2=accountTypeRepository.findById(1);

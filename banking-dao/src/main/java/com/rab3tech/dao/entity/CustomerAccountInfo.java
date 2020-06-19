@@ -5,9 +5,12 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -21,24 +24,35 @@ import javax.persistence.Table;
 public class CustomerAccountInfo {
 
 	private long id;
-	private String customerId;
+	private Login customerId;
 	private String accountNumber;
 	private String currency;
 	private String branch;
 	private float tavBalance;
 	private float avBalance;
 	private Date StatusAsOf;
-	private String accountType;
+	private AccountType accountType;
+	
 
-	@Column(length=20)
-	public String getAccountType() {
+	@OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "customerId", nullable = false)
+	public Login getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(Login customerId) {
+		this.customerId = customerId;
+	}
+
+	@OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "accountType", nullable = false)
+	public AccountType getAccountType() {
 		return accountType;
 	}
 
-	public void setAccountType(String accountType) {
+	public void setAccountType(AccountType accountType) {
 		this.accountType = accountType;
 	}
-
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -48,14 +62,6 @@ public class CustomerAccountInfo {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public String getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(String customerId) {
-		this.customerId = customerId;
 	}
 
 	public String getAccountNumber() {

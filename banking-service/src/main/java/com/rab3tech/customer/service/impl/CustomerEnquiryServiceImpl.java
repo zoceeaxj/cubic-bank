@@ -97,6 +97,13 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 		List<CustomerSaving> customerSavingList = customerAccountEnquiryRepository.findPendingEnquiries(AccountStatusEnum.PENDING.name());
 		return convertEntityIntoVO(customerSavingList);
 	}
+	
+	@Override
+	@TimeLogger
+	public List<CustomerSavingVO> findRegisteredEnquiry() {
+		List<CustomerSaving> customerSavingList = customerAccountEnquiryRepository.findPendingEnquiries(AccountStatusEnum.REGISTERED.name());
+		return convertEntityIntoVO(customerSavingList);
+	}
 
 	@Override
 	@TimeLogger

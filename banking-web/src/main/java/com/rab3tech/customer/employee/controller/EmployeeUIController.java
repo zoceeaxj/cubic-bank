@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.rab3tech.customer.service.CustomerService;
 import com.rab3tech.customer.service.impl.CustomerEnquiryService;
 import com.rab3tech.email.service.EmailService;
 import com.rab3tech.utils.BankHttpUtils;
+import com.rab3tech.vo.CustomerAccountInfoVO;
 import com.rab3tech.vo.CustomerSavingVO;
 import com.rab3tech.vo.EmailVO;
 
@@ -29,12 +31,33 @@ public class EmployeeUIController {
 	@Autowired
 	private CustomerEnquiryService customerEnquiryService;
 	
+	@Autowired
+	private CustomerService customerService;
 	
 	@Value("${customer.registration.url}")
 	private String registrationURL;
 	
 	@Autowired
 	private EmailService emailService;
+	
+	
+	
+	@PostMapping("/customers/account/approve")
+	public String customerAccountApprove(@RequestParam int csaid) {
+		CustomerAccountInfoVO accountInfoVO=customerService.createBankAccount(csaid);
+		System.out.println(accountInfoVO);
+		return "redirect:/customer/accounts/approved";
+	}
+	
+	//This is showing customers who are already registered and account is not created so far
+	@GetMapping(value= {"/customer/accounts/approved"})
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+	public String showCustomerAccountsApproved(Model model) {
+		logger.info("showCustomerAccountsApproved is called!!!");
+		List<CustomerSavingVO> pendingApplications = customerEnquiryService.findRegisteredEnquiry();
+		model.addAttribute("applicants", pendingApplications);
+		return "employee/customerAccountsApproved";	//login.html
+	}
 	
 	
 	@GetMapping(value= {"/customer/enquiries"})
