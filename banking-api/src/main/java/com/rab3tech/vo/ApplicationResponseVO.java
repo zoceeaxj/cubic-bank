@@ -15,4 +15,5 @@ public class ApplicationResponseVO {
 	private int id;
 	private String userid;
 	
+	
 }

@@ -97,9 +97,15 @@
        <input type="password" style="width: 60%;" class="form-control"  name="password"  id="password"  placeholder="Enter password" onkeyup="messageClear();">
     </div>
     <button type="button" class="btn btn-primary"  onclick="authUser();">Login</button>
+    
     <button type="reset" class="btn btn-danger">Reset</button>
+    
     <a th:href="@{/customer/account/enquiry}"> 
     <button type="button" class="btn btn-warning">Customer Enquiry</button>
+    </a>
+    
+    <a th:href="@{/customer/forget/password}">
+    <button type="button" class="btn btn-danger">Forget Password</button>
     </a>
   </form>
   </div>

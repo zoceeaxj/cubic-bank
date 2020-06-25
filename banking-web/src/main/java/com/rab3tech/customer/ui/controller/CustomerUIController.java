@@ -54,6 +54,14 @@ public class CustomerUIController {
 	@Autowired
    private LoginService loginService;	
 	
+	
+	@GetMapping("/customer/forget/password")
+	public String forgetPassword() {
+		//spring.thymeleaf.prefix=classpath:/src/main/resources/templates/
+		return "customer/forgetPassword";	//forgetPassword.html	
+	}
+	
+	
 	@PostMapping("/customer/changePassword")
 	public String saveCustomerQuestions(@ModelAttribute ChangePasswordVO changePasswordVO, Model model,HttpSession session) {
 		LoginVO  loginVO2=(LoginVO)session.getAttribute("userSessionVO");
