@@ -2,6 +2,9 @@ package com.rab3tech.vo;
 
 import java.sql.Timestamp;
 
+import lombok.Data;
+
+@Data
 public class SecurityQuestionsVO {
 	
 	private int qid;
@@ -11,46 +14,5 @@ public class SecurityQuestionsVO {
 	private Timestamp createdate;
 	private Timestamp updatedate;
 		
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	public String getOwner() {
-		return owner;
-	}
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}
-	public Timestamp getCreatedate() {
-		return createdate;
-	}
-	public void setCreatedate(Timestamp createdate) {
-		this.createdate = createdate;
-	}
-	public Timestamp getUpdatedate() {
-		return updatedate;
-	}
-	public void setUpdatedate(Timestamp updatedate) {
-		this.updatedate = updatedate;
-	}
-	public int getQid() {
-		return qid;
-	}
-	public void setQid(int qid) {
-		this.qid = qid;
-	}
-	public String getQuestions() {
-		return questions;
-	}
-	public void setQuestions(String questions) {
-		this.questions = questions;
-	}
-	@Override
-	public String toString() {
-		return "SecurityQuestionsVO [qid=" + qid + ", questions=" + questions
-				+ "]";
-	}
-		
+	
 }
