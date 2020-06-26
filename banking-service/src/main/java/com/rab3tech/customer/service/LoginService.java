@@ -2,6 +2,7 @@ package com.rab3tech.customer.service;
 
 import java.util.Optional;
 
+import com.rab3tech.vo.ChangePasswordRequestVO;
 import com.rab3tech.vo.ChangePasswordVO;
 import com.rab3tech.vo.LoginVO;
 
@@ -14,5 +15,9 @@ public interface LoginService {
 	void changePassword(ChangePasswordVO changePasswordVO);
 
 	boolean checkPasswordValid(String username, String password);
+
+	String updatePassCode(String emailOrUsername, String passCode);
+
+	String updatePassword(ChangePasswordRequestVO changePasswordRequestVO);
 
 }

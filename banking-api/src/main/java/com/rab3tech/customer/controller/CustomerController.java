@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rab3tech.customer.service.LoginService;
 import com.rab3tech.utils.PasswordGenerator;
 import com.rab3tech.vo.ApplicationResponseVO;
+import com.rab3tech.vo.ChangePasswordRequestVO;
 import com.rab3tech.vo.LoginRequestVO;
 import com.rab3tech.vo.LoginVO;
 
@@ -31,6 +32,30 @@ public class CustomerController {
 	private JavaMailSender javaMailSender;
 	
 	
+	//{   "loginid":"nagen@gmail.com",
+	 //      "passcode":"2938939",
+	  //      "newpassword":"*(#$*$*$*$$&"
+	//
+     // } @RequestBody // it takes JSON data from request body and converts into Java Object
+	@PostMapping("/customer/change/password")
+	public ApplicationResponseVO updateCustomerPassword(@RequestBody ChangePasswordRequestVO changePasswordRequestVO) {
+
+		String status=loginService.updatePassword(changePasswordRequestVO);
+		ApplicationResponseVO applicationResponseVO=new ApplicationResponseVO();
+		if("success".equalsIgnoreCase(status)) {
+			applicationResponseVO.setCode(200);
+			applicationResponseVO.setStatus("success");
+			applicationResponseVO.setMessage("Your password is updated successfully.");
+			return applicationResponseVO;
+		}else {
+			applicationResponseVO.setCode(0);
+			applicationResponseVO.setStatus("fail");
+			applicationResponseVO.setMessage(status);
+			return applicationResponseVO;
+		}
+	}
+	
+	
 	@GetMapping("/customer/passcode")
 	// var promise= fetch("v3/customer/passcode?usernameOrEmail="+usernameEmail); 	
 	public ApplicationResponseVO sendPassCode(@RequestParam("usernameOrEmail") 
@@ -38,14 +63,23 @@ public class CustomerController {
 		String email=usernameOrEmail;
 		
 		String passCode=PasswordGenerator.generateRandomPassword(8);
+		String result=loginService.updatePassCode(email,passCode);
+		if("notexist".equalsIgnoreCase(result)) {
+			ApplicationResponseVO applicationResponseVO=new ApplicationResponseVO();
+			applicationResponseVO.setCode(0);
+			applicationResponseVO.setStatus("fail");
+			applicationResponseVO.setMessage("Sorry, this username or email does not exist , "+email);
+			return applicationResponseVO;
+		}
 		try {
 			 //below line will send the email
 			 SimpleMailMessage mailMessage = new SimpleMailMessage();
 	         mailMessage.setTo(email);
 		     mailMessage.setSubject("Regarding your passcode to change password");
-	         mailMessage.setText("Hey! your password code is  = "+passCode);
+	         mailMessage.setText("Hey! "+result+" ,   your password code is  = "+passCode);
 		     mailMessage.setFrom("javahunk100@gmail.com");
 	         javaMailSender.send(mailMessage);
+	         
 		}catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Your passcode is  = "+passCode);

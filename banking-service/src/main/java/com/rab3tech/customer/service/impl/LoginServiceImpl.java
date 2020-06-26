@@ -16,6 +16,7 @@ import com.rab3tech.customer.dao.repository.LoginRepository;
 import com.rab3tech.customer.service.LoginService;
 import com.rab3tech.dao.entity.Login;
 import com.rab3tech.dao.entity.Role;
+import com.rab3tech.vo.ChangePasswordRequestVO;
 import com.rab3tech.vo.ChangePasswordVO;
 import com.rab3tech.vo.LoginVO;
 
@@ -74,6 +75,35 @@ public class LoginServiceImpl implements LoginService {
 		}
 	}
 	
+	@Override
+	public String updatePassword(ChangePasswordRequestVO changePasswordRequestVO) {
+		Optional<Login>  optional=loginRepository.findByLoginidAndToken(changePasswordRequestVO.getLoginid(), changePasswordRequestVO.getPasscode());
+		if(optional.isPresent()) {
+			Login login=optional.get();
+			login.setToken("");
+			login.setLwap(null);
+			String encodedPassword=bCryptPasswordEncoder.encode(changePasswordRequestVO.getNewpassword());
+			login.setPassword(encodedPassword);
+			return "success";
+		}else {
+			return "Sorry, ! your passcode is not correct!";	
+		}
+	}
+	
+	@Override
+	public String updatePassCode(String emailOrUsername,String passCode) {
+		String status="notexist";
+		Optional<Login> optional=loginRepository.findByLoginid(emailOrUsername);
+		if(optional.isPresent()) {
+			//I am loading 
+			Login login=optional.get();	
+			login.setToken(passCode);
+			//at what time this passcode was updated
+			login.setLwap(new Timestamp(new Date().getTime()));
+			status=login.getName();
+		}
+		return status;
+	}
 	
 	@Override
 	public Optional<LoginVO> authUser(LoginVO loginVO) {
