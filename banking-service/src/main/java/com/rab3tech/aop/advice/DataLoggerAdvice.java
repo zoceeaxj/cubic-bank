@@ -22,16 +22,18 @@ private static final Logger logger = LoggerFactory.getLogger(DataLoggerAdvice.cl
     //.* = all the method
      //.. method with any parameter
     //* -any access specifier 
-/*	@Before("execution(* com.rab3tech.customer.service.impl.*.*(..))")
-	public void logMessage(JoinPoint joinPoint) {
-		String name=joinPoint.getSignature().getName();
-		logger.info("_________________________________________________");
-		logger.info(" Method name = "+name+" is called at "+new Date());
-		logger.info(" Method inputs are  {}", Arrays.asList(joinPoint.getArgs()));
-		logger.info("_________________________________________________");
-	}*/
+/*
+ * @Before("execution(* com.rab3tech.customer.service.impl.*.*(..))") public
+ * void logMessage(JoinPoint joinPoint) { String
+ * name=joinPoint.getSignature().getName();
+ * logger.info("_________________________________________________");
+ * logger.info(" Method name = "+name+" is called at "+new Date()); //Object[]
+ * args -List logger.info(" Method inputs are  {}",
+ * Arrays.asList(joinPoint.getArgs()));
+ * logger.info("_________________________________________________"); }
+ */
 	
-	/*@Around("execution(* com.rab3tech.customer.service.impl.*.*(..))")
+	@Around("execution(* com.rab3tech.customer.service.impl.*.*(..))")
 	public Object computeTime(ProceedingJoinPoint joinPoint) {
 		String name=joinPoint.getSignature().getName();
 		long startTime = System.currentTimeMillis();
@@ -39,6 +41,7 @@ private static final Logger logger = LoggerFactory.getLogger(DataLoggerAdvice.cl
 		logger.info(" Method inputs are  {}", Arrays.asList(joinPoint.getArgs()));
 		Object object=null;
 		try {
+			 //go ahead and call actual methods
 			object=joinPoint.proceed();
 		} catch (Throwable e) {
 			e.printStackTrace();
@@ -48,9 +51,9 @@ private static final Logger logger = LoggerFactory.getLogger(DataLoggerAdvice.cl
 		long timeTaken =endTime- startTime;
 		logger.info("Time Taken by {} is {}", name, timeTaken);
 		return object;
-	}*/
+	}
 
-@Around("@annotation(com.rab3tech.aop.advice.TimeLogger)")
+/*@Around("@annotation(com.rab3tech.aop.advice.TimeLogger)")
 public Object computeTime(ProceedingJoinPoint joinPoint) {
 	String name=joinPoint.getSignature().getName();
 	long startTime = System.currentTimeMillis();
@@ -68,7 +71,7 @@ public Object computeTime(ProceedingJoinPoint joinPoint) {
 	logger.info("Time Taken by {} is {}", name, timeTaken);
 	return object;
 }
-
+*/
 
 
 }
