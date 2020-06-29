@@ -40,10 +40,26 @@
  <script type="text/javascript">
  
         function toggleStatus(status,qid) {
-        	window.location.href="http://localhost:999/admin/security/uquestion?status="+status+"&qid="+qid;
+        	//status="+status+"&qid="+qid is called query string
+        	//window.location.href="/admin/security/uquestion?status="+status+"&qid="+qid;
+         	   //make ajax call
+     	        var promise= fetch("/v3/security/uquestion?status="+status+"&qid="+qid); 	
+     	        promise.then(response=>response.json()).then(function(data){
+     	        	console.log(data);
+     	        	if('Yes'==status){
+     	        		$("#statusButton").html('No');	
+     	        	}else{
+     	        		$("#statusButton").html('Yes');
+     	        	}
+     	        	
+     	        	$("#mmessage").html(data.message);
+     	        });
+        
         }
  
          function openModal(){
+        	 
+        	  //$('#questionModal')  = this gives me object which id is questionModal
         	 $('#questionModal').modal('show');
          }
  
@@ -71,7 +87,8 @@
 <a th:href="@{/customer/logout}"> 
 <button type="button" class="btn btn-warning">Logout</button>
 </a>
-   <span th:utext="${error}" style="color: red;font-size: 18px;"></span>
+   <hr/>
+   <span th:utext="${error}" style="color: red;font-size: 18px;" id="mmessage"></span>
    <hr/>
   <div style="width: 100%">
    <a th:onclick="|openModal()|"  href="#"> 
@@ -94,9 +111,8 @@
     <td>
     
      <a  th:onclick="|toggleStatus('${questionsVO.status}',${questionsVO.qid})|" style="cursor: pointer;">
-
       <button type="button" th:name="csaid" th:value="${questionsVO.status}" class="btn btn-primary">    
-       <span th:utext="${questionsVO.status}" style="color: black;font-size: 18px;"></span></button>
+       <span th:utext="${questionsVO.status}" style="color: black;font-size: 18px;"  id="statusButton"></span></button>
      </a>
     </td>
     
@@ -117,15 +133,17 @@
       <div class="modal-content">
         <!-- Modal Header -->
         
-      <form action="#" method="post"  th:action="@{/admin/add/question}">
+      <form  method="post"  th:action="@{/admin/add/question}">
         <div class="modal-header">
-          <h4 class="modal-title">Add new Question</h4>
+          <h4 class="modal-title">
+           <img th:src="@{/images/ques.png}" alt="page"/>
+          Add new Question</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
         <!-- Modal body -->
         <div class="modal-body">
-        
+           
             Enter Question
             <input type="text" name="question" class="form-control">
         
