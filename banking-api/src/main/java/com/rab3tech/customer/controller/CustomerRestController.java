@@ -23,7 +23,7 @@ import com.rab3tech.vo.LoginVO;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/v3")
-public class CustomerController {
+public class CustomerRestController {
 	
 	@Autowired
 	private LoginService loginService;

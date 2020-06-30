@@ -37,7 +37,9 @@
   </a>
 <button type="button" class="btn btn-secondary">Lock/Unlock</button>
 <button type="button" class="btn btn-success">Customer Transaction</button>
-<button type="button" class="btn btn-danger">TODO</button>
+<a th:href="@{/admin/customers}">
+<button type="button" class="btn btn-danger">Customer(s)</button>
+</a>
 <button type="button" class="btn btn-warning">Loan Request</button>
   <img th:src="@{/images/customer_dashboard.jpg}" alt="page"/>
    <span th:utext="${error}" style="color: red;font-size: 18px;"></span>
