@@ -1,5 +1,7 @@
 package com.rab3tech.customer.service.impl;
 
+import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -33,6 +35,7 @@ import com.rab3tech.utils.AccountStatusEnum;
 import com.rab3tech.utils.PasswordGenerator;
 import com.rab3tech.utils.Utils;
 import com.rab3tech.vo.CustomerAccountInfoVO;
+import com.rab3tech.vo.CustomerUpdateVO;
 import com.rab3tech.vo.CustomerVO;
 
 @Service
@@ -145,6 +148,22 @@ public class CustomerServiceImpl implements CustomerService {
 		map(CustomerMapper::toVO).//Stream<CustomerVO>
 		collect(Collectors.toList()); //List<CustomerVO>
 	}
+	
+	@Override
+	public void updateProfile(CustomerUpdateVO customerVO) {
+		//I have loaded entity inside persistence context - >>Session
+		Customer customer=customerRepository.findById(customerVO.getCid()).get();
+		try {
+			customer.setImage(customerVO.getPhoto().getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		customer.setName(customerVO.getName());
+		customer.setMobile(customerVO.getMobile());
+		customer.setDom(new Timestamp(new Date().getTime()));
+		///customerRepository.save(customer);
+	}
+	
 	
 	@Override
 	public byte[] findPhotoByid(int cid) {

@@ -35,8 +35,8 @@ public class CustomerAccountEnquiryControllerTest {
 	@Mock
 	private CustomerEnquiryService customerEnquiryService;
 	
-	 @InjectMocks
-	  private CustomerAccountEnquiryController customerAccountEnquiryController;
+	@InjectMocks
+	private CustomerAccountEnquiryController customerAccountEnquiryController;
 	
 	@Before
     public void init(){

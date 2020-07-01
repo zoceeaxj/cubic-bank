@@ -3,6 +3,7 @@ package com.rab3tech.customer.service;
 import java.util.List;
 
 import com.rab3tech.vo.CustomerAccountInfoVO;
+import com.rab3tech.vo.CustomerUpdateVO;
 import com.rab3tech.vo.CustomerVO;
 
 public interface CustomerService {
@@ -14,5 +15,7 @@ public interface CustomerService {
 	List<CustomerVO> findCustomers();
 
 	byte[] findPhotoByid(int cid);
+
+	void updateProfile(CustomerUpdateVO customerVO);
 
 }
