@@ -1,10 +1,12 @@
 package com.rab3tech.customer.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.rab3tech.vo.ChangePasswordRequestVO;
 import com.rab3tech.vo.ChangePasswordVO;
 import com.rab3tech.vo.LoginVO;
+import com.rab3tech.vo.RoleVO;
 
 public interface LoginService {
 
@@ -19,5 +21,10 @@ public interface LoginService {
 	String updatePassCode(String emailOrUsername, String passCode);
 
 	String updatePassword(ChangePasswordRequestVO changePasswordRequestVO);
+
+	List<RoleVO> findRoles();
+	
+	List<RoleVO> findRolesByUserid(String userid);
+	
 
 }

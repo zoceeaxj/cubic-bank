@@ -6,19 +6,25 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rab3tech.customer.dao.repository.LoginRepository;
+import com.rab3tech.customer.dao.repository.RoleRepository;
 import com.rab3tech.customer.service.LoginService;
 import com.rab3tech.dao.entity.Login;
 import com.rab3tech.dao.entity.Role;
 import com.rab3tech.vo.ChangePasswordRequestVO;
 import com.rab3tech.vo.ChangePasswordVO;
 import com.rab3tech.vo.LoginVO;
+import com.rab3tech.vo.RoleVO;
+
+import ch.qos.logback.core.joran.util.beans.BeanUtil;
 
 
 @Service
@@ -27,6 +33,11 @@ public class LoginServiceImpl implements LoginService {
 	
 	@Autowired
 	private LoginRepository loginRepository;
+	
+	
+	@Autowired
+	private RoleRepository roleRepository;
+	
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -122,5 +133,30 @@ public class LoginServiceImpl implements LoginService {
 		}else {
 			return Optional.empty();
 		}
+	}
+	
+	@Override
+	public List<RoleVO> findRoles(){
+		List<Role> roles=roleRepository.findAll();
+		return roles.stream().map(t->{
+			RoleVO roleVO=new RoleVO();
+			BeanUtils.copyProperties(t, roleVO);
+			roleVO.setId(t.getRid());
+			return roleVO;
+		}).collect(Collectors.toList());
+	}
+
+
+	@Override
+	public List<RoleVO> findRolesByUserid(String userid) {
+		Login login=loginRepository.findByLoginid(userid).get();
+		Set<Role> roles=login.getRoles();
+		
+		return roles.stream().map(t->{
+			RoleVO roleVO=new RoleVO();
+			BeanUtils.copyProperties(t, roleVO);
+			roleVO.setId(t.getRid());
+			return roleVO;
+		}).collect(Collectors.toList());
 	}
 }

@@ -71,6 +71,7 @@ public class CustomerEnquiryServiceImplTest {
 		 assertEquals(customerSavingVOs.get(0).getEmail(),"nagen@gmail.com");
 		 assertEquals(customerSavingVOs.get(1).getName(),"moshi");
 		 assertEquals(customerSavingVOs.get(1).getEmail(),"moshi@gmail.com");
+		 
 		 verify(customerAccountEnquiryRepository, times(1)).findPendingEnquiries(AccountStatusEnum.PENDING.name());
 	     verifyNoMoreInteractions(customerAccountEnquiryRepository);
 	}
@@ -104,7 +105,7 @@ public class CustomerEnquiryServiceImplTest {
 			boolean result=customerEnquiryServiceImpl.emailNotExist("cubic@gmail.com");
 			assertTrue(result);
 	   	    verify(customerAccountEnquiryRepository, times(1)).findByEmail("cubic@gmail.com");
-		   verifyNoMoreInteractions(customerAccountEnquiryRepository);
+		    verifyNoMoreInteractions(customerAccountEnquiryRepository);
 	}
 
 	@Test

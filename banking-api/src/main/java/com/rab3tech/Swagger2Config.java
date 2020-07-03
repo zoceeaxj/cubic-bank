@@ -15,6 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class Swagger2Config {
+	
 	@Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).select()
@@ -26,9 +27,9 @@ public class Swagger2Config {
 
     private ApiInfo apiEndPointsInfo() {
 
-        return new ApiInfoBuilder().title("Spring Boot REST API")
-            .description("Cubic Banking Project")
-            .contact(new Contact("Nagendra Kumar", "www.technohunk.in", "technohunk100@gmail.com"))
+        return new ApiInfoBuilder().title("GRC Software For Infosec Risk, Compliance & Audit Management")
+            .description("GRC Software For Infosec Risk, Compliance & Audit Management")
+            .contact(new Contact("Ctrlmap", "https://www.ctrlmap.com/", "ctrlmap@gmail.com"))
             .license("Apache 2.0")
             .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
             .version("1.0.0")
