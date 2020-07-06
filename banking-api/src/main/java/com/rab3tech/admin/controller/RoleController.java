@@ -10,14 +10,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rab3tech.customer.service.LoginService;
+import com.rab3tech.vo.ApplicationResponseVO;
 import com.rab3tech.vo.RoleVO;
 import com.rab3tech.vo.RoleVOWrapper;
+import com.rab3tech.vo.RolesUpdateRequest;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -44,6 +48,17 @@ public class RoleController {
 	@ResponseStatus(HttpStatus.OK)
 	public List<RoleVO> getRoles() {
 		return loginService.findRoles();
+	}
+	
+	
+	@PutMapping("/customer/roles")
+	public ApplicationResponseVO updateCustomerRoles(@RequestBody RolesUpdateRequest rolesUpdateRequest) {
+		loginService.updateCustomerRoles(rolesUpdateRequest);
+		ApplicationResponseVO applicationResponseVO=new ApplicationResponseVO();
+		applicationResponseVO.setCode(201);
+		applicationResponseVO.setStatus("success");
+		applicationResponseVO.setMessage("Roles is updated successfully.");
+		return applicationResponseVO;
 	}
 	
 

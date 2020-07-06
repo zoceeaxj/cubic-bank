@@ -5,7 +5,6 @@
   <title>Customer List Page</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -38,6 +37,42 @@
 </style>
 
 <script type="text/javascript">
+
+
+   function updateRole() {
+	   var tcid=$("#ceid").val();
+	   var trolesid = []; // JavaScript style to declare the Array
+       $("input[type='checkbox'][id='rolecheckbox']:checked").each(function(i) {
+    	   trolesid.push($(this).val());
+       });
+	   console.log(trolesid);  
+   	   //Create JavaScript object 
+   	   var obj={cid:tcid,rolesid:trolesid}; //List<Integer> rolesid
+   	   
+    	   //convert above object into JSON
+   	   var jsonData=JSON.stringify(obj);
+    	  
+    	   //Creating 
+    	   const options = {
+                   method: 'PUT',
+                   body: jsonData,
+                   headers: {
+                     'Content-Type': 'application/json',
+                     'Accept': 'application/json'
+                   }
+                 };
+    	   
+    	   var promise=fetch("/v3/customer/roles",options);
+    	   promise.then(response=>response.json())
+    	   .then(function(data){
+				 if(data.status=='success'){
+					 $("#rolesModal").modal('hide');
+					 $("#mmessage").html(data.message);
+					
+				 }
+    	   });
+   }
+   
  
     //currentRoles=[1,2]
    function isRoleMatch(currentRoles,roleid){ //2
@@ -67,16 +102,17 @@
                     contents=contents+'<td>'+rowdata.name+'</td>';
                     contents=contents+'<td>'+rowdata.description+'</td>';
                     if(isRoleMatch(currentRoles,rowdata.id)) {
-                    	contents=contents+'<td><input checked type="checkbox" id="checkbox_'+rowdata.id+'" name="checkbox" value="'+rowdata.id+'"></td>';	
+                    	contents=contents+'<td><input checked type="checkbox" id="rolecheckbox" name="checkbox" value="'+rowdata.id+'"></td>';	
                     }else{
-                    	contents=contents+'<td><input  type="checkbox" id="checkbox_'+rowdata.id+'" name="checkbox" value="'+rowdata.id+'"></td>';	
+                    	contents=contents+'<td><input  type="checkbox" id="rolecheckbox" name="checkbox" value="'+rowdata.id+'"></td>';	
                     }
                     contents=contents+'</tr>';
 	        	}
-	        	
+	        	$("#ceid").val(cid);
 	        	$("#roleContents").html(contents);
 	        });
-	   
+	 	   
+		   $("#photoIdWithRoleModal").attr("src","/admin/customers/photo?cid="+cid);
 	      $("#rolesModal").modal('show');
    }
   
@@ -86,6 +122,7 @@
 	   console.log("mobile = "+mobile);
 	   //<img  src=""
 	   //JavaScript code to render the image
+	   
 	   $("#photophoto").attr("src","/admin/customers/photo?cid="+cid);
 	   $("#cid").val(cid);
 	   $("#pname").val(name);
@@ -180,7 +217,7 @@
        
       <form  method="post">
      
-        <input type="hidden" name="cid" id="cid"/>
+        <input type="hidden" name="cid" id="ceid"/>
      
         <div class="modal-header">
           <div class="modal-title">

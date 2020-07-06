@@ -7,6 +7,7 @@ import com.rab3tech.vo.ChangePasswordRequestVO;
 import com.rab3tech.vo.ChangePasswordVO;
 import com.rab3tech.vo.LoginVO;
 import com.rab3tech.vo.RoleVO;
+import com.rab3tech.vo.RolesUpdateRequest;
 
 public interface LoginService {
 
@@ -25,6 +26,8 @@ public interface LoginService {
 	List<RoleVO> findRoles();
 	
 	List<RoleVO> findRolesByUserid(String userid);
+
+	String updateCustomerRoles(RolesUpdateRequest rolesUpdateRequest);
 	
 
 }

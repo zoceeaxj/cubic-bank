@@ -3,6 +3,7 @@ package com.rab3tech.customer.service.impl;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -14,17 +15,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.rab3tech.admin.dao.repository.MagicCustomerRepository;
 import com.rab3tech.customer.dao.repository.LoginRepository;
 import com.rab3tech.customer.dao.repository.RoleRepository;
 import com.rab3tech.customer.service.LoginService;
+import com.rab3tech.dao.entity.Customer;
 import com.rab3tech.dao.entity.Login;
 import com.rab3tech.dao.entity.Role;
 import com.rab3tech.vo.ChangePasswordRequestVO;
 import com.rab3tech.vo.ChangePasswordVO;
 import com.rab3tech.vo.LoginVO;
 import com.rab3tech.vo.RoleVO;
-
-import ch.qos.logback.core.joran.util.beans.BeanUtil;
+import com.rab3tech.vo.RolesUpdateRequest;
 
 
 @Service
@@ -33,6 +35,11 @@ public class LoginServiceImpl implements LoginService {
 	
 	@Autowired
 	private LoginRepository loginRepository;
+	
+	
+	
+	@Autowired
+	private MagicCustomerRepository customerRepository;
 	
 	
 	@Autowired
@@ -145,6 +152,20 @@ public class LoginServiceImpl implements LoginService {
 			return roleVO;
 		}).collect(Collectors.toList());
 	}
+	
+	@Override
+	public String updateCustomerRoles(RolesUpdateRequest rolesUpdateRequest){
+		Customer customer=customerRepository.findById(rolesUpdateRequest.getCid()).get();
+		Login login=customer.getLogin();
+		Set<Role> roles=new HashSet<Role>();
+        for(Integer rid:rolesUpdateRequest.getRolesid()) {
+        	Role role=roleRepository.findById(rid).get();
+        	roles.add(role);
+        }
+        login.setRoles(roles);
+		return "updated";
+	}
+
 
 
 	@Override
