@@ -37,7 +37,8 @@ public class Login {
 	private String token;
 	private List<CustomerQuestionAnswer> customerQuestionAnswers;
 	
-	 private Set<Role> roles;
+	
+	private Set<Role> roles;
 	 
 	 
 	 public Timestamp getLwap() {
