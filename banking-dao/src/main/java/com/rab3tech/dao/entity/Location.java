@@ -12,54 +12,64 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="location_tbl")
+@Table(name = "location_tbl")
 public class Location {
-	
+
 	private int id;
 	private String lcode;
-	private String location;
+	private String name;
 	private Timestamp doe;
 	private Timestamp dom;
 	private Login login;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getLcode() {
 		return lcode;
 	}
+
 	public void setLcode(String lcode) {
 		this.lcode = lcode;
 	}
-	public String getLocation() {
-		return location;
+
+	public String getName() {
+		return name;
 	}
-	public void setLocation(String location) {
-		this.location = location;
+
+	public void setName(String name) {
+		this.name = name;
 	}
+
 	public Timestamp getDoe() {
 		return doe;
 	}
+
 	public void setDoe(Timestamp doe) {
 		this.doe = doe;
 	}
+
 	public Timestamp getDom() {
 		return dom;
 	}
+
 	public void setDom(Timestamp dom) {
 		this.dom = dom;
 	}
-	
+
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="owner", nullable=false)
+	@JoinColumn(name = "owner", nullable = false)
 	public Login getLogin() {
 		return login;
 	}
+
 	public void setLogin(Login login) {
 		this.login = login;
 	}

@@ -41,7 +41,15 @@ public class EmployeeUIController {
 	private EmailService emailService;
 	
 	
+	@PreAuthorize("hasAuthority('EMPLOYEE')")
+	@GetMapping("/customers/account/approve")
+	public String customerAccountApproveGet(@RequestParam int csaid) {
+		CustomerAccountInfoVO accountInfoVO=customerService.createBankAccount(csaid);
+		System.out.println(accountInfoVO);
+		return "redirect:/customer/accounts/approved";
+	}
 	
+	@PreAuthorize("hasAuthority('EMPLOYEE')")
 	@PostMapping("/customers/account/approve")
 	public String customerAccountApprove(@RequestParam int csaid) {
 		CustomerAccountInfoVO accountInfoVO=customerService.createBankAccount(csaid);
