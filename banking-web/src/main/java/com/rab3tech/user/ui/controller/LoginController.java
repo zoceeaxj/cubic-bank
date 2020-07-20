@@ -33,7 +33,7 @@ public class LoginController {
 	@Autowired
 	private SecurityQuestionService securityQuestionService;
 	
-	@GetMapping(value= {"/customer/login","/logout/success"})
+	@GetMapping(value= {"/customer/login","/logout/success","/clogin"})
 	public String showCustomerLogin(@RequestParam(value="error",required=false) boolean messsage,Model model) {
 		  if(messsage) {
 			  model.addAttribute("error", "Sorry , your username and password are wrong!!!!!!!!!!!");
@@ -41,7 +41,13 @@ public class LoginController {
 		return "customer/login";	//login.html
 	}	
 	
-	
+	@GetMapping(value= {"/cgmail","/technohunk"})
+	public String testCustomerLogin(@RequestParam(value="error",required=false) boolean messsage,Model model) {
+		  if(messsage) {
+			  model.addAttribute("error", "Sorry , your username and password are wrong!!!!!!!!!!!");
+		  }
+		  return "customer/login";	//login.html
+	}	
 
 	@GetMapping(value= {"/access/denied"})
 	public String accessDenied(Model model) {
