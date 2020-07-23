@@ -1,5 +1,6 @@
 package com.rab3tech.customer.ui.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.rab3tech.customer.service.CustomerService;
+import com.rab3tech.customer.service.LocationService;
 import com.rab3tech.customer.service.LoginService;
 import com.rab3tech.customer.service.impl.CustomerEnquiryService;
 import com.rab3tech.customer.service.impl.SecurityQuestionService;
@@ -25,6 +27,7 @@ import com.rab3tech.vo.CustomerSecurityQueAnsVO;
 import com.rab3tech.vo.CustomerVO;
 import com.rab3tech.vo.EmailVO;
 import com.rab3tech.vo.LoginVO;
+import com.rab3tech.vo.PayeeInfoVO;
 
 /**
  * 
@@ -33,6 +36,7 @@ import com.rab3tech.vo.LoginVO;
  *
  */
 @Controller
+//@RequestMapping("/customer")
 public class CustomerUIController {
 
 	private static final Logger logger = LoggerFactory.getLogger(CustomerUIController.class);
@@ -54,7 +58,10 @@ public class CustomerUIController {
 	@Autowired
    private LoginService loginService;	
 	
+	@Autowired
+   private LocationService locationService;
 	
+
 	@GetMapping("/customer/forget/password")
 	public String forgetPassword() {
 		//spring.thymeleaf.prefix=classpath:/src/main/resources/templates/
@@ -139,6 +146,7 @@ public class CustomerUIController {
 		return "customer/login";
 	}
 
+  /*
 	@GetMapping(value = { "/customer/account/enquiry", "/", "/mocha", "/welcome" })
 	public String showCustomerEnquiryPage(Model model) {
 		CustomerSavingVO customerSavingVO = new CustomerSavingVO();
@@ -146,7 +154,17 @@ public class CustomerUIController {
 		model.addAttribute("customerSavingVO", customerSavingVO);
 		return "customer/customerEnquiry"; // customerEnquiry.html
 	}
-
+*/
+    
+    @GetMapping(value = { "/customer/account/enquiry", "/", "/mocha", "/welcome" })
+	public String showCustomerEnquiryPage(Model model) {
+		//LoadLocationAndAccountVO loadLocationAndAccountVOs = new LoadLocationAndAccountVO();
+		CustomerSavingVO customerSavingVO = new CustomerSavingVO();
+		
+		model.addAttribute("customerSavingVO", customerSavingVO);
+		return "customer/customerEnquiry"; // customerEnquiry.html
+	}
+	
 	@PostMapping("/customer/account/enquiry")
 	public String submitEnquiryData(@ModelAttribute CustomerSavingVO customerSavingVO, Model model) {
 		boolean status = customerEnquiryService.emailNotExist(customerSavingVO.getEmail());
@@ -165,4 +183,49 @@ public class CustomerUIController {
 
 	}
 
+	@GetMapping("/customer/app/status")
+	public String customerAppStatus() {
+		
+		return "customer/appstatus";
+	}
+	
+	@GetMapping("/customer/customerSearch")
+	public String customerSearch() {
+		
+		return "customer/customerSearch";
+	}
+	
+	@GetMapping("/customer/addPayee")
+	public String customerAddPayee() {
+		
+		return "customer/addPayee";
+	}
+	
+	@PostMapping("/customer/account/addPayee")
+	public String newPayee(@ModelAttribute("payeeInfoVO") PayeeInfoVO payeeInfoVO, Model model) {
+		System.out.println("MY CUSTOMER USERID ========================================="+payeeInfoVO.getCustomerId());
+		//String loginId = loginService.findUserByName(payeeInfoVO.getPayeeName());
+		//payeeInfoVO.setCustomerId(loginId);
+		customerService.addPayee(payeeInfoVO);
+		model.addAttribute("successMessage", "Payee added successfully");
+		return "customer/addPayee";
+	}
+	
+	
+
+	@GetMapping("/customer/pendingPayee")
+	public String pendinPayeeList(Model model) {
+		List<PayeeInfoVO> payeeInfoList = customerService.pendingPayeeList();
+		model.addAttribute("payeeInfoList", payeeInfoList);
+		return "customer/pendingPayee";
+		
+	}
+	
+	@GetMapping("/customer/registeredPayee")
+	public String registeredPayeeList(Model model) {
+		List<PayeeInfoVO> payeeInfoList = customerService.registeredPayeeList();
+		model.addAttribute("payeeInfoList", payeeInfoList);
+		return "customer/registeredPayee";
+		
+	}
 }

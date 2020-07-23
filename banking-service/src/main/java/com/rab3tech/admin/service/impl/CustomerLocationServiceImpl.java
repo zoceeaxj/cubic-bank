@@ -44,8 +44,8 @@ public class CustomerLocationServiceImpl implements CustomerLocationService{
 	public void update(LocationVO locationVO) {
 		Location location = customerLocationRepository.findById(locationVO.getId()).get();
 		location.setLcode(locationVO.getLcode());
-		location.setName(locationVO.getName());
-		location.setDom(new Timestamp(new Date().getTime()));
+		//location.setName(locationVO.getName());
+		//location.setDom(new Timestamp(new Date().getTime()));
 	}
 	
 }

@@ -13,5 +13,12 @@ import com.rab3tech.dao.entity.Customer;
  */
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 	public Optional<Customer> findByEmail(String email);
+	
+	public Optional<Customer> findByName(String name);
+	
+	public Optional<Customer> findByMobile(String mobile);
 }
+
+
+
 

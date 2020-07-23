@@ -2,6 +2,7 @@ package com.rab3tech.customer.service.impl;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -21,22 +22,30 @@ import com.rab3tech.admin.dao.repository.MagicCustomerRepository;
 import com.rab3tech.customer.dao.repository.CustomerAccountApprovedRepository;
 import com.rab3tech.customer.dao.repository.CustomerAccountEnquiryRepository;
 import com.rab3tech.customer.dao.repository.CustomerAccountInfoRepository;
+import com.rab3tech.customer.dao.repository.CustomerRepository;
+import com.rab3tech.customer.dao.repository.PayeeRepository;
 import com.rab3tech.customer.dao.repository.RoleRepository;
 import com.rab3tech.customer.service.CustomerService;
 import com.rab3tech.dao.entity.AccountStatus;
+import com.rab3tech.dao.entity.AccountType;
 import com.rab3tech.dao.entity.Customer;
 import com.rab3tech.dao.entity.CustomerAccountInfo;
 import com.rab3tech.dao.entity.CustomerSaving;
 import com.rab3tech.dao.entity.CustomerSavingApproved;
 import com.rab3tech.dao.entity.Login;
+import com.rab3tech.dao.entity.PayeeInfo;
+import com.rab3tech.dao.entity.PayeeStatus;
 import com.rab3tech.dao.entity.Role;
 import com.rab3tech.mapper.CustomerMapper;
 import com.rab3tech.utils.AccountStatusEnum;
 import com.rab3tech.utils.PasswordGenerator;
 import com.rab3tech.utils.Utils;
+import com.rab3tech.vo.AccountTypeVO;
 import com.rab3tech.vo.CustomerAccountInfoVO;
 import com.rab3tech.vo.CustomerUpdateVO;
 import com.rab3tech.vo.CustomerVO;
+import com.rab3tech.vo.PayeeInfoVO;
+import com.rab3tech.vo.RoleVO;
 
 @Service
 @Transactional
@@ -65,6 +74,12 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Autowired
 	private CustomerAccountInfoRepository customerAccountInfoRepository;
+	
+	@Autowired
+	private CustomerRepository CustomerRepository;
+	
+	@Autowired
+	private PayeeRepository payeeRepository;
 
 	@Override
 	public CustomerAccountInfoVO createBankAccount(int csaid) {
@@ -176,5 +191,114 @@ public class CustomerServiceImpl implements CustomerService {
 		
 	}
 	
+   @Override
+	public List<RoleVO> getRoles(){
+		
+		List<Role> roles = roleRepository.findAll();
+		List<RoleVO> rolesVO = new ArrayList<RoleVO>(); 
+		for(Role role : roles) {
+			System.out.println("MY ROLE========"+role.toString());
+			RoleVO roleVO = new RoleVO();
+			BeanUtils.copyProperties(role, roleVO);
+			rolesVO.add(roleVO);
+		}
+		
+		return rolesVO;
+	}
+	
+   @Override
+   public String findCustomerByEmail(String email) {
+	   Optional<CustomerSaving> customer = customerAccountEnquiryRepository.findByEmail(email);  
+	   String result = "";
+	   if(customer.isPresent()) {
+		   result = "fail";
+	   }
+	   else result="success";
+	   
+	   return result;
+   }
+   
+   @Override
+   public String findCustomerByMobile(String mobile) {
+	   Optional<CustomerSaving> customer = customerAccountEnquiryRepository.findByMobile(mobile);  
+	   String result = "";
+	   if(customer.isPresent()) {
+		   result = "fail";
+	   }
+	   else result="success";
+	   
+	   return result;
+   }
+   
+   @Override
+   public  CustomerVO searchCustomer(String searchKey){
+	   Optional<Customer> customer = CustomerRepository.findByName(searchKey.trim());
+	   CustomerVO customerVO = null;
+	   if(customer.isPresent()) {
+		   customerVO = new CustomerVO();
+		   customerVO.setId(customer.get().getId());
+		   customerVO.setName(customer.get().getName().trim());
+		   customerVO.setEmail(customer.get().getEmail());
+		   customerVO.setAddress(customer.get().getAddress());
+		   customerVO.setMobile(customer.get().getMobile());
+		   customerVO.setImage(customer.get().getImage());
+		   
+	   }
+	   
+	   return customerVO;
+   }
+
+      @Override
+    public List<AccountTypeVO> findAccountTypes() {
+	     List<AccountType> accounts = accountTypeRepository.findAll();
+	     List<AccountTypeVO> accountsVO =  new ArrayList<AccountTypeVO>();
+	     for(AccountType account : accounts) {
+		    AccountTypeVO accountVO = new AccountTypeVO();
+		    BeanUtils.copyProperties(account, accountVO);
+		     accountsVO.add(accountVO);
+	      }
+    	return accountsVO;
+      }
+ 
+     @Override
+     public void addPayee(PayeeInfoVO payeeInfoVO) {
+    	 PayeeStatus payeeStatus = new PayeeStatus();
+    	 payeeStatus.setId(1);
+    	 PayeeInfo payeeInfo = new PayeeInfo();
+    	 payeeInfo.setPayeeStatus(payeeStatus);
+		 BeanUtils.copyProperties(payeeInfoVO, payeeInfo);
+		 payeeInfo.setDoe(new Timestamp(new Date().getTime()));
+		 payeeRepository.save(payeeInfo);
+     }
+     
+	 @Override
+	 public List<PayeeInfoVO> pendingPayeeList(){
+		   
+		   List<PayeeInfo> payeeInfoList =  payeeRepository.findAll();
+		   List<PayeeInfoVO> payeeInfoVOList = new ArrayList<PayeeInfoVO>();
+		   for(PayeeInfo pi : payeeInfoList) {
+			    PayeeInfoVO piVO = new PayeeInfoVO();
+			    piVO.setPayeeStatus(pi.getPayeeStatus().getName());
+			    BeanUtils.copyProperties(pi, piVO);
+			    payeeInfoVOList.add(piVO);
+		   }
+		   
+		   return payeeInfoVOList;
+	   }
+
+	 @Override
+	 public List<PayeeInfoVO> registeredPayeeList(){
+		   
+		   List<PayeeInfo> payeeInfoList =  payeeRepository.findPendingPayee();
+		   List<PayeeInfoVO> payeeInfoVOList = new ArrayList<PayeeInfoVO>();
+		   for(PayeeInfo pi : payeeInfoList) {
+			    PayeeInfoVO piVO = new PayeeInfoVO();
+			    piVO.setPayeeStatus(pi.getPayeeStatus().getName());
+			    BeanUtils.copyProperties(pi, piVO);
+			    payeeInfoVOList.add(piVO);
+		   }
+		   
+		   return payeeInfoVOList;
+	   }
 
 }
