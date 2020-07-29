@@ -44,7 +44,8 @@ private static final Logger logger = LoggerFactory.getLogger(DataLoggerAdvice.cl
 			 //go ahead and call actual methods
 			object=joinPoint.proceed();
 		} catch (Throwable e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			logger.error(e.getStackTrace().toString());
 		}
 		long endTime=System.currentTimeMillis();
 		logger.info(" Method name = "+name+" is called at endTime  =  "+endTime+" Millies");

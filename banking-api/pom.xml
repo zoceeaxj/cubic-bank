@@ -29,14 +29,14 @@
 		</dependency>
 		
 		<!-- Jar to enable it as a client micro services -->
-		<dependency>
+	<!-- 	<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
+		</dependency> -->
 		
 			<!-- Below dependency download embedded tomcat -->
 		<dependency>

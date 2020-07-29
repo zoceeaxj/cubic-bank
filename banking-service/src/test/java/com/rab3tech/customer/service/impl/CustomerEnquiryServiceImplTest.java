@@ -10,7 +10,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,14 +24,22 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.BeanUtils;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.rab3tech.admin.dao.repository.AccountStatusRepository;
 import com.rab3tech.admin.dao.repository.AccountTypeRepository;
 import com.rab3tech.customer.dao.repository.CustomerAccountEnquiryRepository;
+import com.rab3tech.dao.entity.AccountStatus;
+import com.rab3tech.dao.entity.AccountType;
 import com.rab3tech.dao.entity.CustomerSaving;
+import com.rab3tech.dao.entity.Login;
 import com.rab3tech.email.service.EmailService;
+import com.rab3tech.service.exception.BankServiceException;
 import com.rab3tech.utils.AccountStatusEnum;
+import com.rab3tech.utils.Utils;
 import com.rab3tech.vo.CustomerSavingVO;
+import com.rab3tech.vo.EmailVO;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -107,6 +117,47 @@ public class CustomerEnquiryServiceImplTest {
 	   	    verify(customerAccountEnquiryRepository, times(1)).findByEmail("cubic@gmail.com");
 		    verifyNoMoreInteractions(customerAccountEnquiryRepository);
 	}
+   
+   
+    @Test
+    public void testSaveEnquiry() {
+    	CustomerSavingVO customerSavingVO=new CustomerSavingVO(0,"Jack","jack@gmail.com","9899899899","Fremont","Saving","Pending","U8378",null,null);
+    	
+    	AccountType accountType=new AccountType();
+    	accountType.setName("Saving");
+    	accountType.setCode("C-122");
+    	accountType.setDescription("Saving");
+    	accountType.setId(1);
+		Optional<AccountType> optional=Optional.of(accountType);
+		when(accountTypeRepository.findByName(customerSavingVO.getAccType())).thenReturn(optional);
+		
+		
+		CustomerSaving entity = new CustomerSaving();
+		BeanUtils.copyProperties(customerSavingVO, entity, new String[] { "accType", "status" });
+		if (optional.isPresent()) {
+			entity.setAccType(optional.get());
+		}
+		
+		CustomerSaving savingEntity =new CustomerSaving();
+		savingEntity.setCsaid(202020);
+		when(customerAccountEnquiryRepository.save(entity)).thenReturn(savingEntity);
+		
+		
+		when(emailService.sendEquiryEmail(new EmailVO(customerSavingVO.getEmail(), "javahunk100@gmail.com", null,
+				"Hello! your account enquiry is submitted successfully.", customerSavingVO.getName()))).thenReturn("done");
+		
+		CustomerSavingVO result=customerEnquiryServiceImpl.save(customerSavingVO);
+		
+		assertNotNull(result);
+		assertEquals(202020, result.getCsaid());
+		verify(customerAccountEnquiryRepository, times(1)).save(entity);
+	    verifyNoMoreInteractions(customerAccountEnquiryRepository);
+	    
+	    verify(emailService, times(1)).sendEquiryEmail(new EmailVO(customerSavingVO.getEmail(), "javahunk100@gmail.com", null,
+				"Hello! your account enquiry is submitted successfully.", customerSavingVO.getName()));
+	    verifyNoMoreInteractions(emailService);
+		
+    }
 
 	@Test
 	@Ignore
