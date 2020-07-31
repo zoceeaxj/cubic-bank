@@ -9,10 +9,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doNothing;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,19 +24,15 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.BeanUtils;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.rab3tech.admin.dao.repository.AccountStatusRepository;
 import com.rab3tech.admin.dao.repository.AccountTypeRepository;
+import com.rab3tech.aop.advice.TimeLogger;
 import com.rab3tech.customer.dao.repository.CustomerAccountEnquiryRepository;
-import com.rab3tech.dao.entity.AccountStatus;
 import com.rab3tech.dao.entity.AccountType;
 import com.rab3tech.dao.entity.CustomerSaving;
-import com.rab3tech.dao.entity.Login;
 import com.rab3tech.email.service.EmailService;
-import com.rab3tech.service.exception.BankServiceException;
 import com.rab3tech.utils.AccountStatusEnum;
-import com.rab3tech.utils.Utils;
 import com.rab3tech.vo.CustomerSavingVO;
 import com.rab3tech.vo.EmailVO;
 
@@ -104,7 +99,6 @@ public class CustomerEnquiryServiceImplTest {
 			Optional<CustomerSaving> optional=Optional.of(customerSaving);
 			when(customerAccountEnquiryRepository.findByEmail("cubic@gmail.com")).thenReturn(optional);
 			boolean result=customerEnquiryServiceImpl.emailNotExist("cubic@gmail.com");
-			
 			assertFalse(result);
 	}
 	
@@ -182,11 +176,14 @@ public class CustomerEnquiryServiceImplTest {
 	public void testFindCustomerEnquiryByUuid() {
 		fail("Not yet implemented");
 	}
-
+	
 	@Test
-	@Ignore
 	public void testDeleteById() {
-		fail("Not yet implemented");
+		final int csaid=82727;
+		doNothing().when(customerAccountEnquiryRepository).deleteById(csaid);
+		customerEnquiryServiceImpl.deleteById(csaid);
+		verify(customerAccountEnquiryRepository, times(1)).deleteById(csaid);
+		 verifyNoMoreInteractions(customerAccountEnquiryRepository);
 	}
 
 }
