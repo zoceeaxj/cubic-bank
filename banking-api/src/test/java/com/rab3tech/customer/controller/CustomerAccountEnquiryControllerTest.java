@@ -84,7 +84,7 @@ public class CustomerAccountEnquiryControllerTest {
 	
 	@Test
 	public	void testSaveEnquiryWhenSuccess2() throws Exception {
-		  CustomerSavingVO customerSavingVO=new CustomerSavingVO(122,"nagendra","nagen@gmail.com","02390","NA","Saving","Appoved","C9393",null,"A435");
+		  CustomerSavingVO customerSavingVO=new CustomerSavingVO(0,"nagendra","nagen@gmail.com","02390","NA","Saving","Appoved","C9393",null,"A435");
 		  when(customerEnquiryService.emailNotExist("nagen@gmail.com")).thenReturn(true);
 	 	  when(customerEnquiryService.save(customerSavingVO)).thenReturn(customerSavingVO);
 	 	 mockMvc.perform(MockMvcRequestBuilders.post("/v3/customers/enquiry")
@@ -96,17 +96,17 @@ public class CustomerAccountEnquiryControllerTest {
 	 			.andExpect(jsonPath("$.name").value("nagendra"))
 	 			.andExpect(jsonPath("$.email").value("nagen@gmail.com"))
 	 			.andDo(print());
-		 verify(customerEnquiryService, times(1)).save(customerSavingVO);
-	     //verifyNoMoreInteractions(customerEnquiryService);
+	 	 
+	 	verify(customerEnquiryService, times(1)).save(customerSavingVO);
+ 	    verify(customerEnquiryService, times(1)).emailNotExist("nagen@gmail.com");
+        verifyNoMoreInteractions(customerEnquiryService);
 	}
 	
 	@Test
 	public	void testGetEnquiryByIdWhenExist() throws Exception {
-		 
 		CustomerSavingVO customerSavingVO=new CustomerSavingVO(122,"nagendra","nagen@gmail.com","02390","NA",
 				"Saving","Appoved","C9393",null,"A435");
 		 when(customerEnquiryService.findById(122)).thenReturn(customerSavingVO);
-	 	
 		 mockMvc.perform(MockMvcRequestBuilders.get("/v3/customers/enquiry/"+122)
      	 			 .accept(MediaType.APPLICATION_JSON))
 		 			.andExpect(jsonPath("$.name").exists())
