@@ -29,5 +29,9 @@ public interface CustomerAccountEnquiryRepository extends JpaRepository<Customer
 	Optional<CustomerSaving> findByAppref(String appref);
 
 	Optional<CustomerSaving> findByMobile(String mobile);
+	
+	@Query("SELECT t FROM CustomerSaving t where t.email = ?1 OR t.appref = ?1")
+    public Optional<CustomerSaving> findAppStatus(String searchText);
+	
 }
 

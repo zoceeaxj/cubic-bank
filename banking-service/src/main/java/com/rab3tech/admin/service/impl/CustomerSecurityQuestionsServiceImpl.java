@@ -2,8 +2,10 @@ package com.rab3tech.admin.service.impl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,14 +38,20 @@ public class CustomerSecurityQuestionsServiceImpl  implements CustomerSecurityQu
 	
 	@Override
 	public List<SecurityQuestionsVO> findSecurityQuestions() {
-		List<SecurityQuestions> securityQuestions=customerSecurityQuestionsDao.findAll();
-		List<SecurityQuestionsVO>  questionsVOs=new ArrayList<>();
+
+		return customerSecurityQuestionsDao.findAll().stream().map(sq->{
+			SecurityQuestionsVO questionsVO=new SecurityQuestionsVO();
+			BeanUtils.copyProperties(sq, questionsVO);
+			return questionsVO;
+		}).collect(Collectors.toList());
+		
+		/*List<SecurityQuestionsVO>  questionsVOs=new ArrayList<>();
 		for(SecurityQuestions entity:securityQuestions) {
 			SecurityQuestionsVO questionsVO=new SecurityQuestionsVO();
 			BeanUtils.copyProperties(entity, questionsVO);
 			questionsVOs.add(questionsVO);
 		}
-		return questionsVOs;
+		return questionsVOs;*/
 	}
 
 	@Override

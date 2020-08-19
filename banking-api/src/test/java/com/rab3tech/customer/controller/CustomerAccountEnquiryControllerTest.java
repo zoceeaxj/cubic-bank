@@ -2,6 +2,8 @@ package com.rab3tech.customer.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -16,7 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -24,8 +28,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.util.NestedServletException;
 
 import com.rab3tech.customer.service.impl.CustomerEnquiryService;
+import com.rab3tech.service.exception.BankServiceException;
 import com.rab3tech.test.TestUtil;
 import com.rab3tech.vo.CustomerSavingVO;
 public class CustomerAccountEnquiryControllerTest {
@@ -116,6 +122,40 @@ public class CustomerAccountEnquiryControllerTest {
 		 			.andDo(print());
 		 verify(customerEnquiryService, times(1)).findById(122);
 	     verifyNoMoreInteractions(customerEnquiryService);
+	}
+	
+	 @Rule
+	  public final ExpectedException exception = ExpectedException.none();
+
+	/*@Test
+	public	void testSaveEnquiryWhenThrowsException() throws Exception {
+		 String exceptionParam = "Sorry , this email is already in use ";
+		 //CustomerSavingVO customerSavingVO=new CustomerSavingVO(122,"nagendra","nagen@gmail.com","02390","NA","Saving","Appoved","C9393",null,"A435");
+		 when(customerEnquiryService.emailNotExist("nagen@gmail.com")).thenReturn(false);
+		 mockMvc.perform(MockMvcRequestBuilders.post("/v3/customers/enquiry",exceptionParam)
+	 	    .contentType(MediaType.APPLICATION_JSON))
+			 	.andExpect(status().isBadRequest())
+			 	.andExpect(result -> assertTrue(result.getResolvedException() instanceof BankServiceException))
+			  .andExpect(result -> assertEquals(exceptionParam, result.getResolvedException().getMessage()))
+		    .andReturn();
+	}*/
+	
+	@Test
+	public	void testSaveEnquiryWhenException() throws Exception {
+		
+		 String exceptionParam = "Sorry , this email is already in use nagen@gmail.com";
+		  CustomerSavingVO customerSavingVO=new CustomerSavingVO(0,"nagendra","nagen@gmail.com","02390","NA","Saving","Appoved","C9393",null,"A435");
+		  when(customerEnquiryService.emailNotExist("nagen@gmail.com")).thenReturn(false);
+	 	  when(customerEnquiryService.save(customerSavingVO)).thenReturn(customerSavingVO);
+	 	 //exception.expect(BankServiceException.class);
+	 	  mockMvc.perform(MockMvcRequestBuilders.post("/v3/customers/enquiry")
+	 	        .contentType(MediaType.APPLICATION_JSON)
+	 	        .content(TestUtil.convertObjectToJsonBytes(customerSavingVO))
+	 			.accept(MediaType.APPLICATION_JSON))
+	 	.andExpect(status().is5xxServerError())
+	 	//.andExpect(result -> assertTrue(result.getResolvedException() instanceof NestedServletException))
+	  //.andExpect(result -> assertEquals(exceptionParam, result.getResolvedException().getMessage()))
+    .andReturn();
 	}
 	
 }

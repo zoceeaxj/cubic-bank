@@ -46,6 +46,22 @@ public class CustomerEnquiryServiceImpl implements CustomerEnquiryService {
 
 	@Value("${bank.from.email:nagen@gmail.com}")
 	private String fromEmail;
+	
+	
+	@Override
+	public CustomerSavingVO findAppStatus(String searchText){
+		CustomerSavingVO customerSavingVO=null;
+		Optional<CustomerSaving> optional=customerAccountEnquiryRepository.findAppStatus(searchText);
+		if(optional.isPresent()){
+			CustomerSaving customerSaving=optional.get();
+			customerSavingVO=new CustomerSavingVO();
+			BeanUtils.copyProperties(customerSaving, customerSavingVO,new String[]{"accType","status"});
+			customerSavingVO.setAccType(customerSaving.getAccType().getName());
+			customerSavingVO.setStatus(customerSaving.getStatus().getName());
+		}
+		return customerSavingVO;
+	}
+	
 
 	@Override
 	@TimeLogger

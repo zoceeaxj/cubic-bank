@@ -33,20 +33,25 @@
   <img th:src="@{/images/customer-en.png}" alt="Logo" style="height: 120px"/>
   <div style="width: 70%">
   
-   <form th:action="@{/customer/account/enquiry}" method="POST"  th:object="${customerSavingVO}" >
+   <form th:action="@{/customer/account/enquiry}" method="POST"  
+   th:object="${customerSavingVO}" >
   
     <div class="form-group">
       <label for="name">Name:</label>
-      <input type="text" style="width: 60%;" class="form-control" th:field="*{name}" placeholder="Enter name">
+      <input type="text" style="width: 60%;" class="form-control" 
+      th:field="*{name}" placeholder="Enter name">
     </div>
   
     <div class="form-group">
       <label for="email">Email:</label>
-      <input type="email" class="form-control" th:field="*{email}" placeholder="Enter email">
+      <input type="email" class="form-control" 
+      th:field="*{email}" placeholder="Enter email">
+      
     </div>
     <div class="form-group">
       <label for="mobile">Mobile:</label>
-      <input type="text" style="width: 60%;" th:field="*{mobile}"  class="form-control" placeholder="Enter mobile">
+      <input type="text" style="width: 60%;" 
+      th:field="*{mobile}"  class="form-control" placeholder="Enter mobile">
     </div>
     
      <div class="form-group">

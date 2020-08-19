@@ -16,4 +16,5 @@ public interface CustomerEnquiryService {
 	Optional<CustomerSavingVO> findCustomerEnquiryByUuid(String ucrid);
 	List<CustomerSavingVO> findPendingEnquiry();
 	List<CustomerSavingVO> findRegisteredEnquiry();
+	CustomerSavingVO findAppStatus(String searchText);
 }
