@@ -34,6 +34,8 @@ public class CustomerController {
 	   return "admin/customers";
 	}
 	
+	
+	
 	@GetMapping("/customers/photo")
 	public void findCustomerPhoto(@RequestParam int cid,HttpServletResponse response) throws IOException {
 	   byte[] photo=customerService.findPhotoByid(cid);

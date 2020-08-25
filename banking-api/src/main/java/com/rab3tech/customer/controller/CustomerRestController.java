@@ -1,5 +1,6 @@
 package com.rab3tech.customer.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rab3tech.customer.service.CustomerService;
 import com.rab3tech.customer.service.LoginService;
 import com.rab3tech.utils.PasswordGenerator;
 import com.rab3tech.vo.ApplicationResponseVO;
 import com.rab3tech.vo.ChangePasswordRequestVO;
+import com.rab3tech.vo.CustomerVO;
 import com.rab3tech.vo.LoginRequestVO;
 import com.rab3tech.vo.LoginVO;
 
@@ -30,6 +33,16 @@ public class CustomerRestController {
 	
 	@Autowired
 	private JavaMailSender javaMailSender;
+	
+	@Autowired
+	private CustomerService customerService;
+	
+	
+	@GetMapping("/scustomers")
+	public List<CustomerVO> searchCustomers(@RequestParam String searchText){
+		CustomerVO customerVO=customerService.searchCustomer(searchText);
+		return null;
+	}
 	
 	
 	//{   "loginid":"nagen@gmail.com",

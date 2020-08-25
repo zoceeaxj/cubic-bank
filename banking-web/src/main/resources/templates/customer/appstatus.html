@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
     xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Login Page</title>
+  <title>Customer App Status!!!!!!!!!!!!!!</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -60,49 +60,6 @@
     	   }
     	   $("#errorMessage").html("");
        }
- 
-        function authUser() {
-        	var  uname=$("#username").val();
-        	if(uname.length==0) {
-        		 $("#errorMessage").html("Hey!, username cannot be blank!");
-        		 $("#username").focus();
-        		 return;
-        	}
-        	
-        	var  upassword=$("#password").val();
-            if(upassword.length==0) {
-                 $("#errorMessage").html("Hey!, password cannot be blank!");
-                 $("#password").focus();
-                 return;
-            }
-            
-            var jsonObj={username:uname,password:upassword};
-            var jsonString= JSON.stringify(jsonObj);
-          
-            //AJAX - >>> Node.js
-            const options = {
-                    method: 'POST',
-                    body: jsonString,
-                    headers: {
-                      'Content-Type': 'application/json',
-                      'Accept': 'application/json'
-                    }
-                  };
-            
-            var promise=fetch('/v3/user/login', options);
-            promise.then(res => res.json()).then(function(data){
-            	 if(data.code==200) {
-            		    //submitting 
-            		    $("#loginForm").submit();
-            		    //document.loginForm.submit();
-            		    //document.getElementById("loginForm").submit();
-            	 }else {
-            		  $("#errorMessage").html(data.message);
-            	 }
-            });
-            
-        }
- 
  </script>
 
 </head>

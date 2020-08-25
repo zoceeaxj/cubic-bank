@@ -117,6 +117,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public CustomerVO createAccount(CustomerVO customerVO) {
+		System.gc();
 		Customer pcustomer = new Customer();
 		BeanUtils.copyProperties(customerVO, pcustomer);
 		Login login = new Login();
