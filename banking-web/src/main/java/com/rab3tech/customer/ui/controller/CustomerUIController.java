@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -213,19 +215,25 @@ public class CustomerUIController {
 	}
 	
 	@GetMapping("/customer/addPayee")
-	public String customerAddPayee() {
-		
+	public String customerAddPayee(Model model) {
+		PayeeInfoVO payeeInfoVO=new PayeeInfoVO();
+		model.addAttribute("payeeInfoVO",payeeInfoVO);
 		return "customer/addPayee";
 	}
 	
 	@PostMapping("/customer/account/addPayee")
-	public String newPayee(@ModelAttribute("payeeInfoVO") PayeeInfoVO payeeInfoVO, Model model) {
+	public String newPayee(@Valid @ModelAttribute("payeeInfoVO") PayeeInfoVO payeeInfoVO,HttpSession session, Model model,BindingResult bindingResult) {
+	    if (bindingResult.hasErrors()) {
+	    	return "customer/addPayee";	
+		}
+		LoginVO loginVO=(LoginVO)session.getAttribute("userSessionVO");
+		payeeInfoVO.setCustomerId(loginVO.getUsername());
 		System.out.println("MY CUSTOMER USERID ========================================="+payeeInfoVO.getCustomerId());
 		//String loginId = loginService.findUserByName(payeeInfoVO.getPayeeName());
 		//payeeInfoVO.setCustomerId(loginId);
 		customerService.addPayee(payeeInfoVO);
 		model.addAttribute("successMessage", "Payee added successfully");
-		return "customer/addPayee";
+		return "redirect:/customer/dashboard";
 	}
 	
 	

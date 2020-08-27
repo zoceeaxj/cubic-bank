@@ -76,6 +76,7 @@ public class LoginController {
 		if(optional.isPresent()) {
 					LoginVO  loginVO2=optional.get();
 					loginVO2.setPassword("");
+					
 					session.setAttribute("userSessionVO", loginVO2);
 					switch (loginVO2.getRoles().get(0)) {
 					case "EMPLOYEE":

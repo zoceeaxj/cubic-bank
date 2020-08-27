@@ -28,7 +28,8 @@
 <header style="height: 30px;background-color: maroon;color:white;">
 
     Hello Mr. <span th:utext="${session.userSessionVO.username}" th:unless="${session == null}" style="font-weight: bold;"></span>
-   
+    <span style="float: right;margin-right: 100px;font-weight: bold;" th:utext="${session.userSessionVO.roles}">
+    </span>
 </header>
 <br/><br/>
 <div class="container">
