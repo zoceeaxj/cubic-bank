@@ -28,6 +28,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -222,10 +223,18 @@ public class CustomerUIController {
 	}
 	
 	@PostMapping("/customer/account/addPayee")
-	public String newPayee(@Valid @ModelAttribute("payeeInfoVO") PayeeInfoVO payeeInfoVO,HttpSession session, Model model,BindingResult bindingResult) {
+	public String newPayee(@Valid @ModelAttribute("payeeInfoVO") PayeeInfoVO payeeInfoVO,BindingResult bindingResult,HttpSession session, Model model) {
+		
+		if(payeeInfoVO.getAccNumberConfirm()!=null && !payeeInfoVO.getAccNumberConfirm().equalsIgnoreCase(payeeInfoVO.getPayeeAccountNo())){
+			//ObjectError objectError=new ObjectError("accNumberConfirm", "Hey!, your account and confirm account are not same");
+			bindingResult.rejectValue("accNumberConfirm", "account.msg", "An account already exists for this email.");
+			//bindingResult.addError(objectError);
+	    }
+		
 	    if (bindingResult.hasErrors()) {
 	    	return "customer/addPayee";	
 		}
+	    
 		LoginVO loginVO=(LoginVO)session.getAttribute("userSessionVO");
 		payeeInfoVO.setCustomerId(loginVO.getUsername());
 		System.out.println("MY CUSTOMER USERID ========================================="+payeeInfoVO.getCustomerId());

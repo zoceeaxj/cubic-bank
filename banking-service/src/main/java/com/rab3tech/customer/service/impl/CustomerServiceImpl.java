@@ -263,12 +263,21 @@ public class CustomerServiceImpl implements CustomerService {
  
      @Override
      public void addPayee(PayeeInfoVO payeeInfoVO) {
+    	 //This is default status for payee
+
+    	 int urn=Utils.generateURN();
+    	 System.out.println("urn  = "+urn);
+    	 //either send sms or email
+    	 
     	 PayeeStatus payeeStatus = new PayeeStatus();
     	 payeeStatus.setId(1);
+    	 
     	 PayeeInfo payeeInfo = new PayeeInfo();
-    	 payeeInfo.setPayeeStatus(payeeStatus);
 		 BeanUtils.copyProperties(payeeInfoVO, payeeInfo);
+		 payeeInfo.setUrn(urn);
+		 payeeInfo.setPayeeStatus(payeeStatus);
 		 payeeInfo.setDoe(new Timestamp(new Date().getTime()));
+		 payeeInfo.setDom(new Timestamp(new Date().getTime()));
 		 payeeRepository.save(payeeInfo);
      }
      

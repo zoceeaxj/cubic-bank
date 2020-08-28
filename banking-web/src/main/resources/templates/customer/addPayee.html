@@ -11,6 +11,13 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   
   <style>
+  
+  .error{
+      color:red;
+      font-weight: bold;
+      font-size: 18px;
+  }
+  
 .ffooter {
   position: fixed;
   left: 0;
@@ -93,7 +100,8 @@ function validateForm(){
   
  <div style="width: 100%">
   
-   <form th:action="@{/customer/account/addPayee}" method="POST"  th:object="${payeeInfoVO}" name="addPayeeForm">
+   <form th:action="@{/customer/account/addPayee}" method="POST"  
+   th:object="${payeeInfoVO}" name="addPayeeForm">
    
     <div>
      <span id="errorMessage" th:utext="${error}" style="color: red;font-size: 14px;"></span>
@@ -104,16 +112,16 @@ function validateForm(){
 						<tr>
 							<td>
 								<div>
-									<label for="payeeAccountNo">Payee Account name:</label> <br />
+									<label for="payeeName">Payee Account name:</label> <br />
 									<input type="text"  class="form-control" th:field="*{payeeName}"/>
-                           <span th:if="${#fields.hasErrors('payeeName')}" th:errors="*{payeeName}">Name Error</span>	
+                           <span th:if="${#fields.hasErrors('payeeName')}" th:errors="*{payeeName}" class="error">Name Error</span>	
 								</div>
 							</td>
 							<td>
 								<div>
-									<label for="tpayeeAcc">Nickname:</label> <br /> <input
-										type="text" class="form-control"
-										id="payeeNickName" name="payeeNickName">
+									<label for="payeeNickName">Nickname:</label> <br /> <input
+										type="text" class="form-control" th:field="*{payeeNickName}">
+										 <span th:if="${#fields.hasErrors('payeeNickName')}" th:errors="*{payeeNickName}" class="error"></span>
 								</div>
 
 							</td>
@@ -124,19 +132,19 @@ function validateForm(){
 							<td>
 
 								<div>
-									<label for="payeeName">Account Number:</label> <br /> <input
+									<label for="payeeAccountNo">Account Number:</label> <br /> <input
 										type="password"  class="form-control"
-										id="payeeAccountNo" name="payeeAccountNo"
-										placeholder="Enter the payee account number">
+										placeholder="Enter the payee account number"  th:field="*{payeeAccountNo}">
+										<span th:if="${#fields.hasErrors('payeeAccountNo')}" th:errors="*{payeeAccountNo}" class="error"></span>
 								</div>
 							</td>
 							<td>
 
 								<div>
-									<label for="payeeNickName">Confirm Account number:</label> <br />
+									<label for="accNumberConfirm">Confirm Account number:</label> <br />
 									<input type="text" class="form-control"
-										id="accNumberConfirm" name="accNumberConfirm"
-										placeholder="Confirm the payee account number">
+										placeholder="Confirm the payee account number"  th:field="*{accNumberConfirm}">
+													<span th:if="${#fields.hasErrors('accNumberConfirm')}" th:errors="*{accNumberConfirm}" class="error"></span>
 								</div>
 
 							</td>
@@ -148,8 +156,7 @@ function validateForm(){
 
 								<div>
 									<label for="remarks">Remarks:</label> <br /> <input type="text"
-										 class="form-control" id="remark"
-										name="remarks">
+										 class="form-control" th:field="*{remarks}">
 								</div>
 							</td>
 							<td>

@@ -23,5 +23,18 @@ public class Utils {
 		System.out.println(generateCustomerAccount());
 	}
 	
+	public static int generateURN() {
+		Random random = new Random();
+		StringBuilder number = new StringBuilder();
+		int three=random.nextInt(1000);
+		if(three<=99){
+			number.append("9"+three);
+		}else{
+			number.append(three);
+		}
+		number.append(String.format("%03d", random.nextInt(1000)));
+		return Integer.parseInt(number.toString());
+	}
+	
 
 }
