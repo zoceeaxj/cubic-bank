@@ -315,7 +315,13 @@ public class CustomerServiceImpl implements CustomerService {
 	 @Override
 	 public String approveDisApprovePayee(PayeeApproveVO payeeApproveVO){
 		 Optional<PayeeInfo> optional=payeeRepository.findByUrnAndPayeeAccountNo(payeeApproveVO.getUrn(), payeeApproveVO.getAccountNumber());
-         if(optional.isPresent()){		 
+         if(optional.isPresent()){	
+        	 //Below 4 lines are updating payee status
+        	 PayeeInfo payeeInfo=optional.get();
+        	 PayeeStatus payeeStatus=new PayeeStatus();
+        	 payeeStatus.setId(2);
+        	 payeeInfo.setPayeeStatus(payeeStatus);
+        	 
             return "approved";	 
          }else{
            return "notapproved"; 	 
