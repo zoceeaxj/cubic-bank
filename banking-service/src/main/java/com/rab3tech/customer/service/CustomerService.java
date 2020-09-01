@@ -6,6 +6,7 @@ import com.rab3tech.vo.AccountTypeVO;
 import com.rab3tech.vo.CustomerAccountInfoVO;
 import com.rab3tech.vo.CustomerUpdateVO;
 import com.rab3tech.vo.CustomerVO;
+import com.rab3tech.vo.PayeeApproveVO;
 import com.rab3tech.vo.PayeeInfoVO;
 import com.rab3tech.vo.RoleVO;
 
@@ -36,6 +37,8 @@ public interface CustomerService {
 	List<PayeeInfoVO> pendingPayeeList();
 
 	List<PayeeInfoVO> registeredPayeeList();
+
+	String approveDisApprovePayee(PayeeApproveVO payeeApproveVO);
 
 	
 

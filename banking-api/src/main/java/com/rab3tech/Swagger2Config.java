@@ -1,4 +1,4 @@
-package com.rab3tech;
+/*package com.rab3tech;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,3 +36,4 @@ public class Swagger2Config {
             .build();
     }
 }
+*/

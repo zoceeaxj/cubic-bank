@@ -25,32 +25,41 @@
 
  <script type="text/javascript">
  
-        function showAppStatus() {
-            var searchText=$("#appIdEmail").val();
-            console.log("searchText = "+searchText);
-            //AJAX Call to fetch data
-            //Rest API call
-            //v3/customer/app/status
-            var promise=fetch("/v3/customer/app/status?searchText="+searchText);
-            //{accType: "Saving"
-				//appref: "Ap193893"
-				//csaid: 333
-				//doa: "2020-08-18T23:57:21.053+0000"
-				//email: "jamges828@gmail.com"
-				//location: "Fremont"
-				//mobile: "345435345"
-				//name: "Rocket!"
-				//status: "Pending from bank"
-				//ucrid: "90234u8hdwtr4236"}
-            promise.then(response=>response.json()).then(function(data){
-            	 $("#pname").html(data.name);
-            	 $("#pemail").html(data.email);
-            	 $("#pmobile").html(data.mobile);
-            	 $("#paccountType").html(data.accType);
-            	 $("#pstatus").html(data.status);
-            	 $("#pdtable").show()
-            });
-        }
+ 
+        $(document).ready(function(){
+        	
+        	$("#checkStatus").click(function(){
+        		 var searchText=$("#appIdEmail").val();
+                 console.log("searchText = "+searchText);
+                 //AJAX Call to fetch data
+                 //Rest API call
+                 //v3/customer/app/status
+                 var promise=fetch("/v3/customer/app/status?searchText="+searchText);
+                 //{accType: "Saving"
+     				//appref: "Ap193893"
+     				//csaid: 333
+     				//doa: "2020-08-18T23:57:21.053+0000"
+     				//email: "jamges828@gmail.com"
+     				//location: "Fremont"
+     				//mobile: "345435345"
+     				//name: "Rocket!"
+     				//status: "Pending from bank"
+     				//ucrid: "90234u8hdwtr4236"}
+                 promise.then(response=>{
+                 	             return response.json();
+                 	     }).then(function(data){
+                 	 var pppdata ={name:"Nagendra",email:"929292"};
+                 	 $("#pname").html(data.name);
+                 	 $("#pemail").html(data.email);
+                 	 $("#pmobile").html(data.mobile);
+                 	 $("#paccountType").html(data.accType);
+                 	 $("#pstatus").html(data.status);
+                 	 $("#pdtable").show()
+                 });
+        		
+        	});
+        	
+        });  
  
        function messageClear(){
     	   var searchText=$("#appIdEmail").val();
@@ -80,7 +89,7 @@
        placeholder="Enter username" onkeyup="messageClear();">
     </div>
   
-    <button type="button" class="btn btn-primary" onclick="showAppStatus();">Check Status</button>
+    <button type="button" class="btn btn-primary"  id="checkStatus">Check Status</button>
     
     <button type="reset" class="btn btn-danger">Reset</button>
     

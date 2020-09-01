@@ -38,14 +38,57 @@
 </style>
 
 <script type="text/javascript">
+
+$(document).ready(function(){
+	$("#approveButton").click(function(){
+		  var taccountNumber=$("#accountNumber").val();
+		  var turn=$("#urn").val();
+		
+		  //Create JavaScript object 
+   	   var obj={accountNumber:taccountNumber,urn:turn};
+   	   //convert above object into JSON
+   	   var jsonData=JSON.stringify(obj);
+   	   //Creating 
+   	   const options = {
+                  method: 'POST',
+                  body: jsonData,
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                  }
+                };
+   	   var promise=fetch("/v3/customer/payee/approve",options);
+   	   promise.then(response=>response.json())
+   	   .then(function(data){
+   		          //data ={status:"success"}
+   		          //data ={status:"fail"}
+				 if(data.status=='fail'){
+					 $("#errorMessage").html(data.message);
+				 }	 
+				 else if(data.status=='pass'){
+					 $("#papa_"+taccountNumber).hide();
+					 $("#errorMessage").html(data.message);			 
+				 }	
+   	   });
+   	   
+		  
+		  
+		  
+	
+	});
+}); //end of the handler -2011
+
   
 function clearMsg(){
 	   $("#errorMessage").html("");
 }  
 
-function openModalApprove(){
-	   
-	   $("#editApprovePayeePopup").modal('show');
+function openModalApprove(accountNumber,payeeName){
+	
+	  ///$("#papa_"+accountNumber).hide();
+	   $("#accountNumber").val(accountNumber);
+	   $("#ppname").html(payeeName);
+	  $("#editApprovePayeePopup").modal('show');
 }
 
   
@@ -85,7 +128,7 @@ function openModalApprove(){
   </thead>
  
   <tbody>
-  <tr th:each="payeeVO,iter: ${payeeInfoList}">
+  <tr th:each="payeeVO,iter: ${payeeInfoList}" th:id="${'papa_'+payeeVO.payeeAccountNo}">
   
     <td th:text="${payeeVO.payeeName}"/>
     <td th:text="${payeeVO.payeeNickName}"/>
@@ -94,7 +137,7 @@ function openModalApprove(){
     <td th:text="${payeeVO.remarks}"/>
     <td th:text="${payeeVO.payeeStatus}"/>
     <td> 
-         <button type="button" class="btn btn-info" th:onclick="|openModalApprove()|">Approve</button>
+         <button type="button" class="btn btn-info" th:onclick="|openModalApprove('${payeeVO.payeeAccountNo}','${payeeVO.payeeName}')|">Approve</button>
          <button type="button" class="btn btn-info" th:onclick="|openModalReject(${payeeVO.id})|">Reject</button>
      </td>
   
@@ -115,9 +158,7 @@ function openModalApprove(){
     <div class="modal-dialog">
       <div class="modal-content">
         <!-- Modal Header -->
-        
-        <input type="hidden" name="cid" id="cid"/>
-      
+        <input type="hidden" name="accountNumber" id="accountNumber"/>
         <div class="modal-header">
           <h2 class="modal-title">
           <img src="" id="photophoto" style="height: 60px;"/>
@@ -128,14 +169,14 @@ function openModalApprove(){
         <!-- Modal body -->
         <div class="modal-body">
            
-            URN
+            URN  - <span id="ppname"></span>
             <input type="text" name="urn" id="urn" class="form-control">
            
         </div>
         
         <!-- Modal footer -->
         <div class="modal-footer">
-          <button type="submit" class="btn btn-danger">Approve payee</button>
+          <button type="button" class="btn btn-danger" id="approveButton">Approve payee</button>
         </div>
       </div>
     </div>

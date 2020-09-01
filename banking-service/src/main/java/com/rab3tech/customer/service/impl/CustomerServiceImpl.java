@@ -44,6 +44,7 @@ import com.rab3tech.vo.AccountTypeVO;
 import com.rab3tech.vo.CustomerAccountInfoVO;
 import com.rab3tech.vo.CustomerUpdateVO;
 import com.rab3tech.vo.CustomerVO;
+import com.rab3tech.vo.PayeeApproveVO;
 import com.rab3tech.vo.PayeeInfoVO;
 import com.rab3tech.vo.RoleVO;
 
@@ -310,5 +311,16 @@ public class CustomerServiceImpl implements CustomerService {
 		   
 		   return payeeInfoVOList;
 	   }
+	 
+	 @Override
+	 public String approveDisApprovePayee(PayeeApproveVO payeeApproveVO){
+		 Optional<PayeeInfo> optional=payeeRepository.findByUrnAndPayeeAccountNo(payeeApproveVO.getUrn(), payeeApproveVO.getAccountNumber());
+         if(optional.isPresent()){		 
+            return "approved";	 
+         }else{
+           return "notapproved"; 	 
+         }
+		   
+	 }
 
 }
