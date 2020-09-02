@@ -10,6 +10,7 @@ public class SpringBootRunner extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootRunner.class, args);
+		
 	}
 	
 	 @Override

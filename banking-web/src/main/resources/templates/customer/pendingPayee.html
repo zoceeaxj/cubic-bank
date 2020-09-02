@@ -67,6 +67,7 @@ $(document).ready(function(){
 				 }	 
 				 else if(data.status=='pass'){
 					 $("#papa_"+taccountNumber).hide();
+					 $("#editApprovePayeePopup").modal('hide');
 					 $("#errorMessage").html(data.message);			 
 				 }	
    	   });

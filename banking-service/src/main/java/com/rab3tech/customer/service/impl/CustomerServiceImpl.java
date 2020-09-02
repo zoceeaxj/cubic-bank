@@ -284,8 +284,15 @@ public class CustomerServiceImpl implements CustomerService {
      
 	 @Override
 	 public List<PayeeInfoVO> pendingPayeeList(){
+		   return payeeRepository.findAll().stream().filter(t->t.getPayeeStatus().getId()==1).map(pi->{
+			    PayeeInfoVO piVO = new PayeeInfoVO();
+			    piVO.setPayeeStatus(pi.getPayeeStatus().getName());
+			    BeanUtils.copyProperties(pi, piVO);
+			    return piVO;
+		   }).collect(Collectors.toList());
 		   
-		   List<PayeeInfo> payeeInfoList =  payeeRepository.findAll();
+		// List<PayeeInfo> payeeInfoList =  payeeRepository.findAll();
+/*		   
 		   List<PayeeInfoVO> payeeInfoVOList = new ArrayList<PayeeInfoVO>();
 		   for(PayeeInfo pi : payeeInfoList) {
 			    PayeeInfoVO piVO = new PayeeInfoVO();
@@ -295,12 +302,12 @@ public class CustomerServiceImpl implements CustomerService {
 		   }
 		   
 		   return payeeInfoVOList;
-	   }
+*/	   }
 
 	 @Override
-	 public List<PayeeInfoVO> registeredPayeeList(){
+	 public List<PayeeInfoVO> registeredPayeeList(String customerId){
 		   
-		   List<PayeeInfo> payeeInfoList =  payeeRepository.findPendingPayee();
+		   List<PayeeInfo> payeeInfoList =  payeeRepository.findRegisteredPayee(customerId);
 		   List<PayeeInfoVO> payeeInfoVOList = new ArrayList<PayeeInfoVO>();
 		   for(PayeeInfo pi : payeeInfoList) {
 			    PayeeInfoVO piVO = new PayeeInfoVO();

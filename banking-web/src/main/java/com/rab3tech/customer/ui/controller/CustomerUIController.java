@@ -45,6 +45,7 @@ import com.rab3tech.vo.CustomerSavingVO;
 import com.rab3tech.vo.CustomerSecurityQueAnsVO;
 import com.rab3tech.vo.CustomerVO;
 import com.rab3tech.vo.EmailVO;
+import com.rab3tech.vo.FundTransferVO;
 import com.rab3tech.vo.LoginVO;
 import com.rab3tech.vo.PayeeInfoVO;
 
@@ -257,11 +258,19 @@ public class CustomerUIController {
 	
 	@GetMapping("/customer/registeredPayee")
 	public String registeredPayeeList(Model model) {
-		List<PayeeInfoVO> payeeInfoList = customerService.registeredPayeeList();
+		List<PayeeInfoVO> payeeInfoList = customerService.registeredPayeeList("technohunk100@gmail.com");
 		model.addAttribute("payeeInfoList", payeeInfoList);
 		return "customer/registeredPayee";
 		
 	}
+	
+	@GetMapping("/customer/fundTransfer")
+	public String fundTransfer(Model model) {
+		FundTransferVO fundTransferVO=new FundTransferVO();
+		model.addAttribute("fundTransferVO",fundTransferVO);
+		return "customer/fundTransfer";
+	}
+	
 	
 
 	private  byte[] generatedCreditCard(String cardNumber,String exp,String name) {

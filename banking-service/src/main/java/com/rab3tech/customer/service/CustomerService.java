@@ -36,7 +36,8 @@ public interface CustomerService {
 
 	List<PayeeInfoVO> pendingPayeeList();
 
-	List<PayeeInfoVO> registeredPayeeList();
+	List<PayeeInfoVO> registeredPayeeList(String customerId);
+	
 
 	String approveDisApprovePayee(PayeeApproveVO payeeApproveVO);
 
