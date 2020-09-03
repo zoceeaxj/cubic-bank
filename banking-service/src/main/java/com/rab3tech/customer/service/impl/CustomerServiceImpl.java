@@ -81,44 +81,48 @@ public class CustomerServiceImpl implements CustomerService {
 	
 	@Autowired
 	private PayeeRepository payeeRepository;
-
-	@Override
-	public CustomerAccountInfoVO createBankAccount(int csaid) {
+	
+	private CustomerAccountInfoVO createBankAccount(int csaid,String email) {
 		// logic
-		String customerAccount = Utils.generateCustomerAccount();
-		CustomerSaving customerSaving = customerAccountEnquiryRepository.findById(csaid).get();
+				String customerAccount = Utils.generateCustomerAccount();
+				CustomerSaving customerSaving = customerAccountEnquiryRepository.findById(csaid).get();
 
-		CustomerAccountInfo customerAccountInfo = new CustomerAccountInfo();
-		customerAccountInfo.setAccountNumber(customerAccount);
-		customerAccountInfo.setAccountType(customerSaving.getAccType());
-		customerAccountInfo.setAvBalance(1000.0F);
-		customerAccountInfo.setBranch(customerSaving.getLocation());
-		customerAccountInfo.setCurrency("$");
-		Customer customer = customerRepository.findByEmail(customerSaving.getEmail()).get();
-		customerAccountInfo.setCustomerId(customer.getLogin());
-		customerAccountInfo.setStatusAsOf(new Date());
-		customerAccountInfo.setTavBalance(1000.0F);
-		CustomerAccountInfo customerAccountInfo2 = customerAccountInfoRepository.save(customerAccountInfo);
+				CustomerAccountInfo customerAccountInfo = new CustomerAccountInfo();
+				customerAccountInfo.setAccountNumber(customerAccount);
+				customerAccountInfo.setAccountType(customerSaving.getAccType());
+				customerAccountInfo.setAvBalance(1000.0F);
+				customerAccountInfo.setBranch(customerSaving.getLocation());
+				customerAccountInfo.setCurrency("$");
+				Customer customer = customerRepository.findByEmail(email==null?customerSaving.getEmail():email).get();
+				customerAccountInfo.setCustomerId(customer.getLogin());
+				customerAccountInfo.setStatusAsOf(new Date());
+				customerAccountInfo.setTavBalance(1000.0F);
+				CustomerAccountInfo customerAccountInfo2 = customerAccountInfoRepository.save(customerAccountInfo);
 
-		CustomerSavingApproved customerSavingApproved = new CustomerSavingApproved();
-		BeanUtils.copyProperties(customerSaving, customerSavingApproved);
-		customerSavingApproved.setAccType(customerSaving.getAccType());
-		customerSavingApproved.setStatus(customerSaving.getStatus());
-		// saving entity into customer_saving_enquiry_approved_tbl
-		customerAccountApprovedRepository.save(customerSavingApproved);
+				CustomerSavingApproved customerSavingApproved = new CustomerSavingApproved();
+				BeanUtils.copyProperties(customerSaving, customerSavingApproved);
+				customerSavingApproved.setAccType(customerSaving.getAccType());
+				customerSavingApproved.setStatus(customerSaving.getStatus());
+				// saving entity into customer_saving_enquiry_approved_tbl
+				customerAccountApprovedRepository.save(customerSavingApproved);
 
-		// delete data from
-		customerAccountEnquiryRepository.delete(customerSaving);
+				// delete data from
+				customerAccountEnquiryRepository.delete(customerSaving);
 
-		CustomerAccountInfoVO accountInfoVO = new CustomerAccountInfoVO();
-		BeanUtils.copyProperties(customerAccountInfo2, accountInfoVO);
-		return accountInfoVO;
-
+				CustomerAccountInfoVO accountInfoVO = new CustomerAccountInfoVO();
+				BeanUtils.copyProperties(customerAccountInfo2, accountInfoVO);
+				return accountInfoVO;
 	}
 
 	@Override
+	public CustomerAccountInfoVO createBankAccount(int csaid) {
+		return createBankAccount(csaid,null);
+	}
+		
+
+	@Override
 	public CustomerVO createAccount(CustomerVO customerVO) {
-		System.gc();
+
 		Customer pcustomer = new Customer();
 		BeanUtils.copyProperties(customerVO, pcustomer);
 		Login login = new Login();
@@ -149,6 +153,9 @@ public class CustomerServiceImpl implements CustomerService {
 					.get();
 			customerSaving.setStatus(accountStatus);
 		}
+		//Do you know database!!!
+		this.createBankAccount(dcustomer.getId(),pcustomer.getEmail());
+		
 		return customerVO;
 	}
 
