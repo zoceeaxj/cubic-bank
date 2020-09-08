@@ -1,6 +1,7 @@
 package com.rab3tech.customer.ui.controller;
 
 import java.awt.Color;
+
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -18,6 +19,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -49,12 +51,7 @@ import com.rab3tech.vo.FundTransferVO;
 import com.rab3tech.vo.LoginVO;
 import com.rab3tech.vo.PayeeInfoVO;
 
-/**
- * 
- * @author nagendra
- * This class for customer GUI
- *
- */
+
 @Controller
 //@RequestMapping("/customer")
 public class CustomerUIController {
@@ -122,49 +119,49 @@ public class CustomerUIController {
 	}
 
 	// http://localhost:444/customer/account/registration?cuid=1585a34b5277-dab2-475a-b7b4-042e032e8121603186515
-	@GetMapping("/customer/account/registration")
-	public String showCustomerRegistrationPage(@RequestParam String cuid, Model model) {
+    @GetMapping("/customer/account/registration")
+    public String showCustomerRegistrationPage(@RequestParam String cuid, Model model) {
 
-		logger.debug("cuid = " + cuid);
-		Optional<CustomerSavingVO> optional = customerEnquiryService.findCustomerEnquiryByUuid(cuid);
-		CustomerVO customerVO = new CustomerVO();
+        logger.debug("cuid = " + cuid);
+        Optional<CustomerSavingVO> optional = customerEnquiryService.findCustomerEnquiryByUuid(cuid);
+        CustomerVO customerVO = new CustomerVO();
 
-		if (!optional.isPresent()) {
-			return "customer/error";
-		} else {
-			// model is used to carry data from controller to the view =- JSP/
-			CustomerSavingVO customerSavingVO = optional.get();
-			customerVO.setEmail(customerSavingVO.getEmail());
-			customerVO.setName(customerSavingVO.getName());
-			customerVO.setMobile(customerSavingVO.getMobile());
-			customerVO.setAddress(customerSavingVO.getLocation());
-			customerVO.setToken(cuid);
-			logger.debug(customerSavingVO.toString());
-			// model - is hash map which is used to carry data from controller to thyme
-			// leaf!!!!!
-			// model is similar to request scope in jsp and servlet
-			model.addAttribute("customerVO", customerVO);
-			return "customer/customerRegistration"; // thyme leaf
-		}
-	}
+        if (!optional.isPresent()) {
+            return "customer/error";
+        } else {
+            // model is used to carry data from controller to the view =- JSP/
+            CustomerSavingVO customerSavingVO = optional.get();
+            customerVO.setEmail(customerSavingVO.getEmail());
+            customerVO.setName(customerSavingVO.getName());
+            customerVO.setMobile(customerSavingVO.getMobile());
+            customerVO.setAddress(customerSavingVO.getLocation());
+            customerVO.setToken(cuid);
+            logger.debug(customerSavingVO.toString());
+            // model - is hash map which is used to carry data from controller to thyme
+            // leaf!!!!!
+            // model is similar to request scope in jsp and servlet
+            model.addAttribute("customerVO", customerVO);
+            return "customer/customerRegistration"; // thyme leaf
+        }
+    }
 
-	@PostMapping("/customer/account/registration")
-	public String createCustomer(@ModelAttribute CustomerVO customerVO, Model model) {
-		// saving customer into database
-		logger.debug(customerVO.toString());
-		customerVO = customerService.createAccount(customerVO);
-		// Write code to send email
+    @PostMapping("/customer/account/registration")
+    public String createCustomer(@ModelAttribute CustomerVO customerVO, Model model) {
+        // saving customer into database
+        logger.debug(customerVO.toString());
+        customerVO = customerService.createAccount(customerVO);
+        // Write code to send email
 
-		EmailVO mail = new EmailVO(customerVO.getEmail(), "javahunk2020@gmail.com",
-				"Regarding Customer " + customerVO.getName() + "  userid and password", "", customerVO.getName());
-		mail.setUsername(customerVO.getUserid());
-		mail.setPassword(customerVO.getPassword());
-		emailService.sendUsernamePasswordEmail(mail);
-		System.out.println(customerVO);
-		model.addAttribute("loginVO", new LoginVO());
-		model.addAttribute("message", "Your account has been setup successfully , please check your email.");
-		return "customer/login";
-	}
+        EmailVO mail = new EmailVO(customerVO.getEmail(), "javahunk2020@gmail.com",
+                "Regarding Customer " + customerVO.getName() + "  userid and password", "", customerVO.getName());
+        mail.setUsername(customerVO.getUserid());
+        mail.setPassword(customerVO.getPassword());
+        emailService.sendUsernamePasswordEmail(mail);
+        System.out.println(customerVO);
+        model.addAttribute("loginVO", new LoginVO());
+        model.addAttribute("message", "Your account has been setup successfully , please check your email.");
+        return "customer/login";
+    }
 
   /*
 	@GetMapping(value = { "/customer/account/enquiry", "/", "/mocha", "/welcome" })
@@ -271,6 +268,21 @@ public class CustomerUIController {
 		return "customer/fundTransfer";
 	}
 	
+	@PostMapping("/customer/fundTransfer")
+    public String fundTransferPost(@ModelAttribute("fundTransferVO") FundTransferVO fundTransferVO, Model model) {
+        return "customer/fundTransferReview";
+    }
+
+    
+    @PostMapping("/customer/fundTransferSubmit")
+    public String fundTransferSubmit(@ModelAttribute("fundTransferVO") FundTransferVO fundTransferVO, Model model) {
+        //validate OTP 
+        //deduct money from sender and credit to account
+        //Make a transaction history
+        //make a su9mmary etc
+        return "customer/fundSummary";
+    }
+	
 	
 
 	private  byte[] generatedCreditCard(String cardNumber,String exp,String name) {
@@ -372,4 +384,29 @@ public class CustomerUIController {
 	   outputStream.flush();
 	   outputStream.close();
 	}
+	
+	 @PostMapping("/customer/account/rejectPayee")
+	    public String rejectPayee(@RequestParam("id") int id) {
+
+	        customerService.rejectPayee(id);
+	        
+	        return "redirect:/customer/pendingPayee";
+	    }
+	 
+     @GetMapping("/customers/acphoto")
+     public void findCustomerPhotoByAc(@RequestParam String accNumber,HttpServletResponse response) throws IOException {
+        byte[] photo=customerService.findPhotoByAC(accNumber);
+        response.setContentType("image/png");
+        ServletOutputStream outputStream=response.getOutputStream();
+        if(photo!=null) {
+            outputStream.write(photo);
+        }else {
+            outputStream.write(new byte[] {});
+        }
+        outputStream.flush();
+        outputStream.close();
+     }
+ 
+     
+
 }

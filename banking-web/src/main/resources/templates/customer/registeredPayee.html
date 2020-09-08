@@ -50,19 +50,31 @@ function clearMsg(){
 <body>
 
 
-<header style="height: 30px;background-color: maroon;color:white;">
- 
-</header>
-<div class="container">
-  <br/><br/>
-  <a th:href="@{/customer/addPayee}"> 
+<header style="height: 30px;background-color: #a1c5ea;color:white;">
+
+    </header>
+    &nbsp;
+    
+    <div class="container">
+    <div style = "text-align:center">
+
+ <a th:href="@{/customer/addPayee}"> 
   <button type="button" class="btn btn-primary">Add payee</button>
   </a>
 
 <a th:href="@{/customer/pendingPayee}">
 <button type="button" class="btn btn-success">Pending payee</button>
 </a>
- <a th:href="@{/customer/logout}"><button type="button" class="btn btn-warning">Logout</button></a>
+
+<a th:href="@{/customer/registeredPayee}">
+<button type="button" class="btn btn-warning">My registered payee</button>
+</a>
+
+<a th:href="@{/customer/fundTransfer}">
+<button type="button" class="btn btn-info">Fund Transfer</button>
+</a>
+
+ <a th:href="@{/customer/logout}"><button type="button" class="btn btn-danger">Logout</button></a>
  <br/>
   <div style="width: 100%">
  <hr/>
@@ -98,8 +110,9 @@ function clearMsg(){
  
    <br/>
  
-    <button type="button" id="submitButton"  class="btn btn-primary">Make a transfert</button>
+    <button type="button" id="submitButton"  class="btn btn-primary">Make a transfer</button>
   </div>
+</div>
 </div>
 <footer  class="ffooter">
 </footer>

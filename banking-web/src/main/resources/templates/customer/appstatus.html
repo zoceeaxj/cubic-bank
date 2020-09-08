@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
     xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Customer App Status!!!!!!!!!!!!!!</title>
+  <title>Customer Application Status</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -72,29 +72,30 @@
 
 </head>
 <body>
-<header style="height: 30px;background-color: maroon;">
+<header style="height: 30px;background-color: #a1c5ea;color:white;">
 </header>
-<div class="container">
+
+<div class="container" style="text-align:center;margin: 0 auto; width: 60%;">
   <h2>Application Status Page
   </h2>
   <img th:src="@{/images/status.jpg}" alt="Logo" style="height: 140px"/>
    <br/>
    <span th:utext="${error}" style="color: red;font-size: 18px;font-weight: bold;"  id="errorMessage"></span>
       <span th:utext="${message}" style="color: blue;font-size: 18px;font-weight: bold;"></span>
-  <div style="width: 70%">
+  <div style="text-align:center;margin: 0 auto">
    <form th:action="@{/customer/fappstatus}" method="GET"   id="appStatusForm"  name="appStatusForm">
     <div class="form-group">
       <label for="username">Enter App Ref or Email:</label>
-      <input type="text" style="width: 60%;" class="form-control"  name="appIdEmail"  id="appIdEmail" 
+      <input type="text" style="text-align:center;margin: 0 auto; width: 60%;" class="form-control"  name="appIdEmail"  id="appIdEmail" 
        placeholder="Enter username" onkeyup="messageClear();">
     </div>
   
     <button type="button" class="btn btn-primary"  id="checkStatus">Check Status</button>
     
-    <button type="reset" class="btn btn-danger">Reset</button>
+    <button type="reset" class="btn btn-danger">Clear</button>
     
     <a th:href="@{/customer/login}"> 
-    <button type="button" class="btn btn-warning">Login</button>
+    <button type="button" class="btn btn-info">Login</button>
     </a>
   </form>
   </div>
@@ -102,7 +103,7 @@
   <p>
   <img th:src="@{/images/result.jpg}" style="height: 65px;"/>
   Current App Status:</p>            
-  <table class="table table-bordered" style="width: 60%;display:none;" id="pdtable">
+  <table class="table table-bordered" style="text-align:center;margin: 0 auto; width: 60%;display:none;" id="pdtable">
     <thead>
       <tr>
         <th>Name</th>

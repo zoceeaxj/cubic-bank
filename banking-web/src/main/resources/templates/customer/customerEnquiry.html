@@ -25,38 +25,39 @@
 </style>
 </head>
 <body>
-<header style="height: 30px;background-color: maroon;">
+<header style="height: 30px;background-color: #a1c5ea;color:white;">
 </header>
-<div class="container">
+<div class="container" style="text-align:center;margin: 0 auto; width: 60%;">
   <h2>Customer Enquiry Page
   </h2>
   <img th:src="@{/images/customer-en.png}" alt="Logo" style="height: 120px"/>
-  <div style="width: 70%">
+  <div style="text-align:center;margin: 0 auto">
+
   
    <form th:action="@{/customer/account/enquiry}" method="POST"  
    th:object="${customerSavingVO}" >
   
     <div class="form-group">
       <label for="name">Name:</label>
-      <input type="text" style="width: 60%;" class="form-control" 
+      <input type="text" style="text-align:center;margin: 0 auto; width: 60%;" class="form-control" 
       th:field="*{name}" placeholder="Enter name">
     </div>
   
     <div class="form-group">
       <label for="email">Email:</label>
-      <input type="email" class="form-control" 
+      <input type="email" style="text-align:center;margin: 0 auto; width: 60%;" class="form-control" 
       th:field="*{email}" placeholder="Enter email">
       
     </div>
     <div class="form-group">
       <label for="mobile">Mobile:</label>
-      <input type="text" style="width: 60%;" 
+      <input type="text" style="text-align:center;margin: 0 auto; width: 60%;" 
       th:field="*{mobile}"  class="form-control" placeholder="Enter mobile">
     </div>
     
      <div class="form-group">
       <label for="accType">A/C type:</label>
-      <select style="width: 60%;"  class="form-control" th:field="*{accType}">
+      <select style="text-align:center;margin: 0 auto; width: 60%;" class="form-control" th:field="*{accType}">
          <option value="SAVING">SAVING</option>
          <option value="CURRENT">CURRENT</option>
          <option value="CORPORATE">CORPORATE</option>
@@ -66,7 +67,7 @@
    
    <div class="form-group">
       <label for="location">Location:</label>
-      <select style="width: 80%;"  class="form-control" th:field="*{location}">
+      <select style="text-align:center;margin: 0 auto; width: 60%;"  class="form-control" th:field="*{location}">
          <option value="Fremont">Fremont</option>
          <option value="California">California</option>
       </select>
@@ -74,7 +75,7 @@
    
     <button type="submit" class="btn btn-primary">Submit Enquiry</button>
     <a th:href="@{/customer/login}"> 
-    <button type="button" class="btn btn-danger">Login</button>
+    <button type="button" class="btn btn-info">Login</button>
     </a>
   </form>
   </div>

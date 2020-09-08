@@ -6,8 +6,19 @@ public class FromToAccountsVO {
 
 	private String fromAccount;
 	private List<String> toAccounts;
+	private String currentBalance;
+	
+	
 
-	public String getFromAccount() {
+	public String getCurrentBalance() {
+        return currentBalance;
+    }
+
+    public void setCurrentBalance(String currentBalance) {
+        this.currentBalance = currentBalance;
+    }
+
+    public String getFromAccount() {
 		return fromAccount;
 	}
 

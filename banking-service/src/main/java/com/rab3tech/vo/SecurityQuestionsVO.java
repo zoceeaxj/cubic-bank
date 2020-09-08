@@ -13,6 +13,42 @@ public class SecurityQuestionsVO {
 	private String owner;
 	private Timestamp createdate;
 	private Timestamp updatedate;
+    public int getQid() {
+        return qid;
+    }
+    public void setQid(int qid) {
+        this.qid = qid;
+    }
+    public String getQuestions() {
+        return questions;
+    }
+    public void setQuestions(String questions) {
+        this.questions = questions;
+    }
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    public String getOwner() {
+        return owner;
+    }
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+    public Timestamp getCreatedate() {
+        return createdate;
+    }
+    public void setCreatedate(Timestamp createdate) {
+        this.createdate = createdate;
+    }
+    public Timestamp getUpdatedate() {
+        return updatedate;
+    }
+    public void setUpdatedate(Timestamp updatedate) {
+        this.updatedate = updatedate;
+    }
 		
 	
 }

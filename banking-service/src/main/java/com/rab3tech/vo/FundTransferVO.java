@@ -5,8 +5,19 @@ public class FundTransferVO {
 	private String toAccount;
 	private String remarks;
 	private double amount;
+	private int otp;
+	
+	
 
-	public String getFromAccount() {
+	public int getOtp() {
+        return otp;
+    }
+
+    public void setOtp(int otp) {
+        this.otp = otp;
+    }
+
+    public String getFromAccount() {
 		return fromAccount;
 	}
 

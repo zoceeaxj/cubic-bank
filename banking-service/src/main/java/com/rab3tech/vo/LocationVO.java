@@ -12,4 +12,47 @@ public class LocationVO {
 	private Timestamp doe;
 	private Timestamp dom;
 	private LoginVO login;
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public String getLcode() {
+        return lcode;
+    }
+    public void setLcode(String lcode) {
+        this.lcode = lcode;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public Timestamp getDoe() {
+        return doe;
+    }
+    public void setDoe(Timestamp doe) {
+        this.doe = doe;
+    }
+    public Timestamp getDom() {
+        return dom;
+    }
+    public void setDom(Timestamp dom) {
+        this.dom = dom;
+    }
+    public LoginVO getLogin() {
+        return login;
+    }
+    public void setLogin(LoginVO login) {
+        this.login = login;
+    }
+    @Override
+    public String toString() {
+        return "LocationVO [id=" + id + ", lcode=" + lcode + ", name=" + name + ", doe=" + doe + ", dom=" + dom
+                + ", login=" + login + "]";
+    }
+	
+	
 }

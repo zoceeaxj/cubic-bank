@@ -19,32 +19,31 @@ import com.rab3tech.vo.PayeeApproveVO;
 @CrossOrigin(origins = "*")
 @RequestMapping("/v3")
 public class CustomerStatusController {
-	
-	@Autowired
-	private CustomerEnquiryService customerEnquiryService;
-	
-	@Autowired
-	private CustomerService customerService;
-	
-	
-	@GetMapping("/customer/app/status")
-	public CustomerSavingVO findCustomerStatus(@RequestParam String searchText){
-		CustomerSavingVO customerSavingVO =customerEnquiryService.findAppStatus(searchText);
-		return customerSavingVO;
-	}
-	
-	@PostMapping("/customer/payee/approve")
-	public ApplicationResponseVO approveOrDisapprovePayee(@RequestBody PayeeApproveVO approveVO){
-		String response=customerService.approveDisApprovePayee(approveVO);
-		ApplicationResponseVO applicationResponseVO=new ApplicationResponseVO();
-		if("approved".equalsIgnoreCase(response)){
-			applicationResponseVO.setMessage("Yeap , it has been approved!!!!!!!!!!!");
-			applicationResponseVO.setStatus("pass");
-		}else{
-			applicationResponseVO.setStatus("fail");
-			applicationResponseVO.setMessage("Sorry , Your urn is not correct , please check it again!");
-		}
-		return applicationResponseVO;
-	}
+
+    @Autowired
+    private CustomerEnquiryService customerEnquiryService;
+
+    @Autowired
+    private CustomerService customerService;
+
+    @GetMapping("/customer/app/status")
+    public CustomerSavingVO findCustomerStatus(@RequestParam String searchText) {
+        CustomerSavingVO customerSavingVO = customerEnquiryService.findAppStatus(searchText);
+        return customerSavingVO;
+    }
+
+    @PostMapping("/customer/payee/approve")
+    public ApplicationResponseVO approveOrDisapprovePayee(@RequestBody PayeeApproveVO approveVO) {
+        String response = customerService.approveDisApprovePayee(approveVO);
+        ApplicationResponseVO applicationResponseVO = new ApplicationResponseVO();
+        if ("approved".equalsIgnoreCase(response)) {
+            applicationResponseVO.setMessage("Yeap , it has been approved!!!!!!!!!!!");
+            applicationResponseVO.setStatus("pass");
+        } else {
+            applicationResponseVO.setStatus("fail");
+            applicationResponseVO.setMessage("Sorry , Your urn is not correct , please check it again!");
+        }
+        return applicationResponseVO;
+    }
 
 }

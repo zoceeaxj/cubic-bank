@@ -120,4 +120,18 @@ public class CustomerRestController {
 		}
 		return applicationResponseVO;
 	}
+	
+	@GetMapping("/amount/words") 
+    public String convertAmountInWords(int amount) {
+        if(amount==100){
+            return "HUNDRED";
+        }
+        if(amount==1000){
+            return "THOUSAND";
+        }
+        if(amount==5000){
+            return "5 THOUSAND";
+        }
+        return "NA";
+    }
 }
