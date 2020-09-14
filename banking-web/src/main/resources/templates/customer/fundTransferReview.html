@@ -133,85 +133,69 @@ th:utext="${successMessage}" style="color: blue; font-size: 14px;"></span> <br /
 Current Balance : <span id="cbalance" style="color: red;"></span>
 
 <table class="table table-bordered" style="width: 100%;">
-                        <tr>
-                            <td style="width: 50%">
-                                <div>
-                                    <label for="fromAccount">From Account:
+<tr>
+<td style="width: 50%">
+<div>
+<label for="fromAccount">From Account: </label> <br /> <input type="hidden" th:value="*{fromAccount}"
+th:field="*{fromAccount}"> <span th:text="*{fromAccount}" style="color: red;"></span>
 
-                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                                     Current Balance : <span id="cbalance" style="color:red;"></span>    
-                                    </label> <br />
-                                    <select th:field="*{fromAccount}" class="form-control" disabled="disabled">
-                                    </select>
-                                </div>
-                            </td>
-                            <td style="width: 50%">
-                                <div>
-                                    <label for="toAccount">To Account:</label> <br /> 
-                                    <select th:field="*{toAccount}"  class="form-control"  style="font-weight: bold;" disabled="disabled">
-                                    </select>
-                                    <!-- <input
+</div>
+</td>
+<td style="width: 50%">
+<div>
+<label for="toAccount">To Account:</label> <br /> 
+<input type="hidden" th:value="*{toAccount}" th:field="*{toAccount}">
+<span th:text="*{toAccount}" style="color: red;"></span>
+
+<!-- <input
                                         type="text" class="form-control" th:field="*{payeeNickName}"> -->
-                                </div>
+</div>
 
-                            </td>
-                        </tr>
+</td>
+</tr>
 
 
-                        <tr>
-                            <td>
+<tr>
+<td>
 
-                                <div>
-                                    <label for="amount">Amount:</label> <br /> 
-                                    <input type="text"
-                                         class="form-control" th:field="*{amount}" readonly="readonly">
-                                    <span id="amountWord" style="color:blue;"></span>    
-                                </div>
-                            </td>
-                            <td>
-                             &nbsp;
-                              <img src="" id="cphoto" style="height: 120px;">
-                            </td>
-                        </tr>
+<div>
+<label for="amount">Amount:</label> <br /> <input type="hidden" th:field="*{amount}" th:value = "*{amount}"> 
+<span th:text="*{amount}" style="color: red;"></span>
+</div>
+</td>
+<td>&nbsp; <img src="" id="cphoto" style="height: 120px;">
+</td>
+</tr>
 
 
 
-                        <tr>
-                            <td>
+<tr>
+<td>
 
-                                <div>
-                                    <label for="remarks">Remarks:</label> <br /> <input type="text"
-                                         class="form-control" th:field="*{remarks}" readonly="readonly">
-                                </div>
-                            </td>
-                            <td>
-                             &nbsp;
-                              <img src="" id="cphoto" style="height: 120px;">
-                            </td>
-                        </tr>
+<div>
+<label for="remarks">Remarks:</label> <br /> <input type="hidden"  th:field="*{remarks}" th:value="*{remarks}">
+<span th:text="*{remarks}" style="color: red;"></span>
+</div>
+</td>
+<td>
+</td>
+</tr>
 
-                    </table>
-                     <div id="otpSection">
-                        <label for="remarks">OTP:</label> <br /> <input type="text"
-                                         class="form-control" th:field="*{otp}">
-                        <span style="color:red;font-weight: bold;" id="otpTimer"></span>        
-                         <br/>       
-                         <button type="button" id="resetOtp" class="btn btn-danger" disabled="disabled">Resend</button>
-                     </div>
-                    <hr/>
-<button type="button" id="submitButton"  class="btn btn-primary">Submit</button>
+</table>
+<div id="otpSection">
+<label for="remarks">OTP:</label> <br /> <input type="text" class="form-control" th:field="*{otp}"> <span
+style="color: red; font-weight: bold;" id="otpTimer"></span> <br />
+<button type="button" id="resetOtp" class="btn btn-danger" disabled="disabled">Resend</button>
+</div>
+<hr />
+<button type="button" id="submitButton" class="btn btn-primary">Submit</button>
 <button type="submit" id="submitTransaction" class="btn btn-primary">Submit Transaction</button>
 
 
-                    <br/>
-
-
-
-  </form>
-  </div>
+<br />
+</form>
 </div>
-<footer  class="ffooter">
-</footer>
-
+</div>
+<footer class="ffooter"> </footer>
 </body>
 </html>

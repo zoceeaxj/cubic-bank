@@ -27,6 +27,7 @@
 	height: 30px;
 	background-color: #e9ffe7;
 }
+
 </style>
 
 <script th:inline="javascript">
@@ -104,48 +105,66 @@ th:utext="${successMessage}" style="color: blue; font-size: 14px;"></span> <br /
 Current Balance : <span id="cbalance" style="color: red;"></span>
 
 <table class="table table-bordered" style="width: 100%;">
-<tr>
-<td style="width: 50%">
-<div>
-<label for="fromAccount">From Account: </label> <br /> <select name="fromAccount" class="form-control" id="fromAccount">
-</select>
-</div>
-</td>
-<td style="width: 50%">
-<div>
-<label for="toAccount">To Account:</label> <br /> <select name="toAccount" class="form-control" id="toAccount"
-style="font-weight: bold;">
-<option>Select</option>
-</select>
+                        <tr>
+                            <td style="width: 50%">
+                                <div>
+                                    <label for="fromAccount">From Account:
+                                    
+                                     </label> <br />
+                                    <select name="fromAccount" class="form-control" id="fromAccount">
+                                    </select>
+                                </div>
+                            </td>
+                            <td style="width: 50%">
+                                <div>
+                                    <label for="toAccount">To Account:</label> <br /> 
+                                    <select name="toAccount" class="form-control" id="toAccount" style="font-weight: bold;">
+                                        <option>Select</option>
+                                    </select>
+                                    <!-- <input
+                                        type="text" class="form-control" th:field="*{payeeNickName}"> -->
+                                </div>
 
-</div>
+                            </td>
+                        </tr>
+                        
+                        
+                        <tr>
+                            <td>
 
-</td>
-</tr>
-<tr>
-<td>
+                                <div>
+                                    <label for="amount">Amount:</label> <br /> 
+                                    <input type="text"
+                                         class="form-control" th:field="*{amount}">
+                                    <span id="amountWord" style="color:blue;"></span>    
+                                </div>
+                            </td>
+                            <td>
+                             &nbsp;
+                              <img src="" id="cphoto" style="height: 180px;">
+                            </td>
+                        </tr>
+                        
 
-<div>
-<label for="amount">Amount:</label> <br /> <input type="text" class="form-control" th:field="*{amount}"> <span
-id="amountWord" style="color: blue;"></span>
-</div>
-</td>
 
-</tr>
+                        <tr>
+                            <td>
 
-<tr>
-<td>
+                                <div>
+                                    <label for="remarks">Remarks:</label> <br /> <input type="text"
+                                         class="form-control" th:field="*{remarks}">
+                                </div>
+                            </td>
+                            <!-- <td>
+                             &nbsp;
+                              <img src="" id="cphoto" style="height: 120px;">
+                            </td> -->
+                        </tr>
 
-<div>
-<label for="remarks">Remarks:</label> <br /> <input type="text" class="form-control" th:field="*{remarks}">
-</div>
-</td>
-<!-- <td>&nbsp; <img src="" id="cphoto" style="height: 120px;">
+                    </table>
 
-</td> -->
-</tr>
 
-</table>
+
 <hr />
 <button type="submit" id="submitButton" class="btn btn-primary">Submit</button>
 <br />
