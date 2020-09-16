@@ -1,10 +1,9 @@
 package com.rab3tech.admin.service.impl;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
@@ -27,13 +26,15 @@ public class CustomerSecurityQuestionsServiceImpl  implements CustomerSecurityQu
 	@Override
 	public void updateStatus(String status,int qid) {
 		//entity is loaded inside session - persistence context
-		SecurityQuestions securityQuestions=customerSecurityQuestionsDao.findById(qid).get();
+	    Optional<SecurityQuestions> securityQuestions=customerSecurityQuestionsDao.findById(qid);
 		if("yes".equalsIgnoreCase(status)) {
 			status="no";
 		}else {
 			status="yes";
 		}
-		securityQuestions.setStatus(status);
+		if(securityQuestions.isPresent()) {
+            securityQuestions.get().setStatus(status);  
+        }
 	}
 	
 	@Override
