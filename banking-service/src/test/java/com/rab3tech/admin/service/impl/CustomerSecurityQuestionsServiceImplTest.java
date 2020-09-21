@@ -101,7 +101,7 @@ public class CustomerSecurityQuestionsServiceImplTest {
         when(customerSecurityQuestionsDao.findAll()).thenReturn(securityQuestions);
         List<SecurityQuestionsVO> questionsVOs=customerSecurityQuestionsService.findSecurityQuestions();
         assertNotNull(questionsVOs);
-        assertEquals(2, questionsVOs.size()); //size is 2 as we have 2 entity
+        assertEquals(2, questionsVOs.size()); //size is 2 as we have 2 entity my DAO layer is returning 2 objects
         assertEquals(questionsVOs.get(0).getQid(), 100);
         assertEquals(questionsVOs.get(1).getQuestions(), "What's your mother name?");
 
