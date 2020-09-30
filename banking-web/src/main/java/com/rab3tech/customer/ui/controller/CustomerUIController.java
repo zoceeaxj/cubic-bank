@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.rab3tech.customer.service.CustomerService;
+import com.rab3tech.customer.service.FundTransferService;
 import com.rab3tech.customer.service.LocationService;
 import com.rab3tech.customer.service.LoginService;
 import com.rab3tech.customer.service.impl.CustomerEnquiryService;
@@ -77,6 +78,9 @@ public class CustomerUIController {
 	
 	@Autowired
    private LocationService locationService;
+	
+	@Autowired
+	private FundTransferService fundTransferService;
 	
 
 	@GetMapping("/customer/forget/password")
@@ -275,13 +279,21 @@ public class CustomerUIController {
 
     
     @PostMapping("/customer/fundTransferSubmit")
-    public String fundTransferSubmit(@ModelAttribute("fundTransferVO") FundTransferVO fundTransferVO, Model model) {
-        //validate OTP 
-        //deduct money from sender and credit to account
-        //Make a transaction history
-        //make a su9mmary etc
-        return "customer/fundSummary";
-    }
+        public String fundTransferSubmit(@ModelAttribute FundTransferVO fundTransferVO, @Valid @RequestParam int otp,
+                BindingResult br, Model model, HttpSession session) {
+            System.out.println(fundTransferVO);
+            if (fundTransferVO.getOtp() != otp) {
+                br.rejectValue("otp", "otp Does Not Match", "The entered OTP does not match. Check your email");
+            }
+            if (br.hasErrors()) {
+                model.addAttribute("fundTransferVO", fundTransferVO);
+                return "customer/transferConfirm";
+            }
+            LoginVO loginVO = (LoginVO) session.getAttribute("userSessionVO");
+            fundTransferService.fundTransfer(fundTransferVO, loginVO);
+            model.addAttribute("successMessage", "You have succesfully transferred $" + fundTransferVO.getAmount());
+            return "customer/dashboard";
+        }
 	
 	
 

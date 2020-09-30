@@ -47,6 +47,12 @@ public interface CustomerService {
 
     CustomerAccountInfoVO findCustomerAccountInfo(String customerId);
 
+    List<String> findAccountTypesByUsername(String customerEmail);
+
+    float findAccountBalance(String loginid, String accountType);
+
+    String findCustByAccountNum(String accNo);
+
 	
 
 }

@@ -122,6 +122,25 @@ public class CustomerAccountInfo {
 				+ ", avBalance=" + avBalance + ", StatusAsOf=" + StatusAsOf
 				+ "]";
 	}
+
+    public CustomerAccountInfo(long id, Login customerId, String accountNumber, String currency, String branch,
+            float tavBalance, float avBalance, Date statusAsOf, AccountType accountType) {
+        super();
+        this.id = id;
+        this.customerId = customerId;
+        this.accountNumber = accountNumber;
+        this.currency = currency;
+        this.branch = branch;
+        this.tavBalance = tavBalance;
+        this.avBalance = avBalance;
+        StatusAsOf = statusAsOf;
+        this.accountType = accountType;
+    }
+
+    public CustomerAccountInfo() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 	
 	
 

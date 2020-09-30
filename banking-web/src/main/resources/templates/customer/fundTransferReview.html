@@ -11,21 +11,21 @@
 
 <style>
 .error {
-	color: red;
-	font-weight: bold;
-	font-size: 18px;
+    color: red;
+    font-weight: bold;
+    font-size: 18px;
 }
 
 .ffooter {
-	position: fixed;
-	left: 0;
-	bottom: 0;
-	width: 100%;
-	background-color: red;
-	color: white;
-	text-align: center;
-	height: 30px;
-	background-color: #e9ffe7;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: red;
+    color: white;
+    text-align: center;
+    height: 30px;
+    background-color: #e9ffe7;
 }
 </style>
 
@@ -106,7 +106,11 @@ $(document).ready(function(){
 </head>
 <body>
 
-<header style="height: 30px; background-color: #a1c5ea; color: white;"> </header>
+<header style="height: 30px; background-color: #a1c5ea; color: white;">
+
+<span th:utext="${session.userSessionVO.username}" id="loginId" th:unless="${session == null}"
+                style="font-weight: bold;"></span>
+            <span style="font-weight: bold;" th:utext="${session.userSessionVO.roles}"> </span> </header>
 &nbsp;
 
 <div class="container">
@@ -122,9 +126,11 @@ $(document).ready(function(){
 <button type="button" class="btn btn-info">Fund Transfer</button>
 </a> <a th:href="@{/customer/logout}"><button type="button" class="btn btn-danger">Logout</button></a> <br /> <br />
 
+
+
 <div style="width: 100%">
 
-<form th:action="@{/customer/fundTransferSubmit}" method="POST" th:object="${fundTransferVO}" name="fundTransferVOForm">
+<form th:action="@{/customer/fundTransferSubmit}" method="POST" th:object="${fundTransferVO}" name="sendMoney">
 
 <div>
 

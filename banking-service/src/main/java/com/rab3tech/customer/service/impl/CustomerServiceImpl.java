@@ -366,4 +366,30 @@ public class CustomerServiceImpl implements CustomerService {
 
         return accountInfoVO;
     }
-}
+
+    @Override
+    public List<String> findAccountTypesByUsername(String customerEmail) {
+        List<CustomerAccountInfo> custAcc = customerAccountInfoRepository.findAllByCustomerId(customerEmail);
+        List<String> accounts = new ArrayList<>();
+        for (CustomerAccountInfo c : custAcc) {
+            accounts.add(c.getAccountType().getName());
+        }
+        return accounts;
+    }
+
+    @Override
+    public float findAccountBalance(String loginid, String accountType) {
+        CustomerAccountInfo check = customerAccountInfoRepository.findByIdAndAccType(loginid, accountType);
+        return check.getTavBalance();
+    }
+
+    @Override
+    public String findCustByAccountNum(String accountNumber) {
+        CustomerAccountInfo customerInfo = customerAccountInfoRepository.findByAccountNumber(accountNumber).get();
+        Login customer = customerInfo.getCustomerId();
+
+        return customer.getLoginid();
+    }
+    
+    
+    }

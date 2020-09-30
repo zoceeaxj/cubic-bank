@@ -27,58 +27,126 @@
 	height: 30px;
 	background-color: #e9ffe7;
 }
-
 </style>
 
-<script th:inline="javascript">
+<!-- <script th:inline="javascript"> -->
+
+<script type="text/javascript">
   
-  function loadData(){
-	  
-	  /*<![CDATA[*/
-var username = /*[[${session.userSessionVO.username}]]*/;
-/*]]>*/
-//When page is loaded then this method will be called
-fetch("/v3/customer/from-to-accounts?loginid="+username).then(response=>response.json()).then(function(data){
-      console.log(data);     
-      $("#fromAccount").append($("<option />").val(data.fromAccount).text(data.fromAccount));
-      var arrayData=data.toAccounts;
-      for(var x=0;x<arrayData.length;x++) {
-          $("#toAccount").append($("<option />").val(arrayData[x]).text(arrayData[x]));
-      }
-      
-      $("#cbalance").html(data.currentBalance);
-      
-});
+$(document).ready(function()
+	    {
+    var loginid=$("#loginId").html();
+    var call=fetch("/v3/customer/fetchAccounts?loginid="+loginid);
+    
+    call.then(resp=>resp.json()).then(
+            function(data){
+                
+                $('#fromAccount').empty();
+                $('#fromAccount').append('<option disabled selected value="">Select one</option')
+                $.each(data, function(i, p) {
+                    $('#fromAccount').append($('<option></option>').val(p).html(p));
+                 
+                });
+        }
+    )
+	
+	        var regPayee=fetch("/v3/customer/fetchYourRegistered?loginid="+loginid)
+	        regPayee.then(response=>response.json()).then(function(data1){
+	            $('#toAccount').empty();
+	            $('#toAccount').append('<option disabled selected value="">Select one</option>')
+	            $.each(data1, function(i, p) {
+	                var show=p.payeeAccountNo+" - "+p.payeeName;
+	                $('#toAccount').append($('<option></option>').val(show).html(show));
+	            });
+	        })
+	    
+	        $("#amount").blur(function(){
+	            var input=$(this).val();
+	    var callIn=fetch("/v3/customer/convertToWords?amount="+input);
+	    callIn.then(resp=>resp.text()).then(function(output){
+	            console.log(output);
+	            $("#inWords").html(output);
+	        });//end of fetch
+	        })
+	        
+	    
+	    
+	    })
+	    function balance(){
+	        var from=$("#fromAccount").val()
+	        var loginid=$("#loginId").html();
+	        console.log(from);
+	        if(from!=null){
+	        var callBalance=fetch("/v3/customer/getAccountBalance?loginid="+loginid+"&accountType="+from)
+	        callBalance.then(resp=>resp.json()).then(function(data){
+	            console.log(data)
+	            $("#balance").html("Current Balance: "+data)
+	            $("#currentBalance").val(data);
+	        })}
+	    }
+	    
+	    function print(){
+	        var st=$("#toAccount").val();
+	        if(st!=null){
+	        
+	            var text=JSON.stringify(st);
+	            var accNum=text.substring(1,13)
+	             var imgEmail= fetch("/v3/customer/findCustByAccNo?accountNumber="+accNum).then(resp=>resp.text()).then(function(data){
+	                  console.log(data);
+	                  $("#cphoto").attr("src","/customers/acphoto?accNumber="+accountNumber);
+	            
+	        })
+	        
+	        }
+	        
+	    }
+
+function validate(){
+    var balance=$("#currentBalance").val();
+    var fromAccount=$("#fromAccount").val();
+    var toAccount=$("#toAccount").val  ();
+    var amount=$("#amount").val();
+    var remarks=$("#remarks").val();
+    console.log(balance)
+    if (fromAccount==null){
+        $("#errorMessage").html("Please select an account to Transfer from");
+        $("#fromAccount").focus();
+        return;
+    }
+    if (toAccount==null){
+        $("#errorMessage").html("Please select an account to Transfer to");
+        $("#toAccount").focus();
+        return;
+    }
+    if (parseFloat(amount)<=0){
+        $("#errorMessage").html("Amount has to be over 0");
+        $("#amount").focus();
+        return;
+    }
+    if (parseFloat(balance)<parseFloat(amount)){
+        $("#errorMessage").html("You do not have enough funds for this transfer");
+        $("#amount").focus();
+        return;
+    } 
+    if (remarks.length==0){
+        $("#errorMessage").html("Please enter a valid remark");
+        $("#remarks").focus();
+        return;
+    }
+    
+    
+     document.fundTransferVOForm.submit(); 
 }
-
-//This code will execute when page is loaded!!!
-$(document).ready(function(){
-
-$("#amount").blur(function(){
-    var aamount=$(this).val();
-    fetch("/v3/amount/words?amount="+aamount)
-           .then(response=>response.text()).then(function(data){
-                   $("#amountWord").html(data);
-    }); //end of the fetch
-}); //end of the event
-
-$("#toAccount").change(function(){
-      var selectedVal=$(this).val();
-      var tokens=selectedVal.split("-");
-      var accountNumber=tokens[0].trim();
-      $("#cphoto").attr("src","/customers/acphoto?accNumber="+accountNumber);
-      
-});
-
-loadData();
-});
-
 
 </script>
 </head>
 <body>
 
-<header style="height: 30px; background-color: #a1c5ea; color: white;"> </header>
+<header style="height: 30px; background-color: #a1c5ea; color: white;">
+
+<span th:utext="${session.userSessionVO.username}" id="loginId" th:unless="${session == null}"
+style="font-weight: bold;"></span> <span style="font-weight: bold;" th:utext="${session.userSessionVO.roles}"> </span>
+</header>
 &nbsp;
 
 <div class="container">
@@ -94,79 +162,79 @@ loadData();
 <button type="button" class="btn btn-info">Fund Transfer</button>
 </a> <a th:href="@{/customer/logout}"><button type="button" class="btn btn-danger">Logout</button></a> <br /> <br />
 
+
 <div style="width: 100%">
 
 <form th:action="@{/customer/fundTransfer}" method="POST" th:object="${fundTransferVO}" name="fundTransferVOForm">
+
+<input type="hidden" id="currentBalance">
 
 <div>
 
 <span id="errorMessage" th:utext="${error}" style="color: red; font-size: 14px;"></span> <span id="errorMessage"
 th:utext="${successMessage}" style="color: blue; font-size: 14px;"></span> <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Current Balance : <span id="cbalance" style="color: red;"></span>
+
+<input type="hidden" id="currentBalance">
+
+<span id="balance" style="color: red;"></span>
 
 <table class="table table-bordered" style="width: 100%;">
-                        <tr>
-                            <td style="width: 50%">
-                                <div>
-                                    <label for="fromAccount">From Account:
-                                    
-                                     </label> <br />
-                                    <select name="fromAccount" class="form-control" id="fromAccount">
-                                    </select>
-                                </div>
-                            </td>
-                            <td style="width: 50%">
-                                <div>
-                                    <label for="toAccount">To Account:</label> <br /> 
-                                    <select name="toAccount" class="form-control" id="toAccount" style="font-weight: bold;">
-                                        <option>Select</option>
-                                    </select>
-                                    <!-- <input
-                                        type="text" class="form-control" th:field="*{payeeNickName}"> -->
-                                </div>
+<tr>
+ 
+<td style="width: 50%">
+<div>
+<label for="fromAccount">From Account: </label> <br /> <select name="fromAccount" class="form-control" id="fromAccount"
+th:field="*{fromAccount}"onClick="balance();">
+</select>
+</div>
+</td>
+<td style="width: 50%">
+<div>
+<label for="toAccount">To Account:</label> 
+<br /> 
+<select name="toAccount" class="form-control" id="toAccount" th:field="*{toAccount}" style="font-weight: bold;" onClick="print();">
 
-                            </td>
-                        </tr>
-                        
-                        
-                        <tr>
-                            <td>
+</select>
 
-                                <div>
-                                    <label for="amount">Amount:</label> <br /> 
-                                    <input type="text"
-                                         class="form-control" th:field="*{amount}">
-                                    <span id="amountWord" style="color:blue;"></span>    
-                                </div>
-                            </td>
-                            <td>
-                             &nbsp;
-                              <img src="" id="cphoto" style="height: 180px;">
-                            </td>
-                        </tr>
-                        
+</div>
+
+</td>
+</tr>
 
 
-                        <tr>
-                            <td>
+<tr>
+<td>
 
-                                <div>
-                                    <label for="remarks">Remarks:</label> <br /> <input type="text"
-                                         class="form-control" th:field="*{remarks}">
-                                </div>
-                            </td>
-                            <!-- <td>
+<div>
+<label for="amount">Amount:</label> <br /> <input type="number" class="form-control" th:field="*{amount}"
+placeholder="Enter the amount"> <span id="inWords"> In Words</span>
+</div>
+</td>
+<td>&nbsp; <img src="" id="cphoto" style="height: 180px;">
+</td>
+</tr>
+
+
+
+<tr>
+<td>
+
+<div>
+<label for="remarks">Remarks:</label> <br /> <input type="text" class="form-control" th:field="*{remarks}">
+</div>
+</td>
+<!-- <td>
                              &nbsp;
                               <img src="" id="cphoto" style="height: 120px;">
                             </td> -->
-                        </tr>
+</tr>
 
-                    </table>
+</table>
 
 
 
 <hr />
-<button type="submit" id="submitButton" class="btn btn-primary">Submit</button>
+<button type="button" class="btn btn-primary" onclick="validate();">Transfer</button>
 <br />
 </form>
 </div>

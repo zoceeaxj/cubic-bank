@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rab3tech.customer.service.CustomerService;
+import com.rab3tech.customer.service.FundTransferService;
 import com.rab3tech.utils.Utils;
 import com.rab3tech.vo.CustomerAccountInfoVO;
 import com.rab3tech.vo.FromToAccountsVO;
@@ -23,6 +24,9 @@ public class CustomerFundTransferController {
 	
 	@Autowired
 	private CustomerService customerService;
+	
+	@Autowired
+	private FundTransferService fundTransferService;
 	
 	//in REST API ,We cannot use session , since it is always stateless
 	
@@ -43,11 +47,44 @@ public class CustomerFundTransferController {
         
         return fromToAccountsVO;
     }
+	
+	@GetMapping("/customer/fetchAccounts")
+    public List<String> fetchUserAccounts(@RequestParam String loginid) {
+        List<String> accountTypes = customerService.findAccountTypesByUsername(loginid);
+        return accountTypes;
+
+    }
+
+    @GetMapping("/customer/fetchYourRegistered")
+    public List<PayeeInfoVO> fetchRegisteredAccounts(@RequestParam String loginid) {
+        List<PayeeInfoVO> accounts = customerService.registeredPayeeList(loginid);
+        return accounts;
+    }
+	
+	
+	
+	@GetMapping("/customer/convertToWords")
+    public String convertToWords(@RequestParam String amount) {
+        
+	    String money = fundTransferService.convertToWords(amount);
+	    return money;
+    }
     
     @GetMapping("/transaction/otp")
     public String transactionOtp(@RequestParam("username") String username) {
          System.out.println("String.valueOf(Utils.generateURN() = "+Utils.generateURN());
          return "generated";    
-    }   
+    }  
     
+    @GetMapping("/customer/getAccountBalance")
+    public float fetchUserBalance(@RequestParam String loginid, String accountType) {
+        float amount = customerService.findAccountBalance(loginid, accountType);
+        return amount;
+    }
+    
+    @GetMapping("/customer/findCustByAccNo")
+    public String findCust(@RequestParam String accountNumber) {
+        String cust = customerService.findCustByAccountNum(accountNumber);
+        return cust;
+    }
 }

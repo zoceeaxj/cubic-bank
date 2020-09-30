@@ -28,6 +28,7 @@ public class FundTransferEntity {
 	private String remarks;
 	private int otp;
 	private Date transactionDate;
+	
     public long getId() {
         return id;
     }
@@ -75,6 +76,21 @@ public class FundTransferEntity {
         return "FundTransferEntity [id=" + id + ", fromAccount=" + fromAccount + ", toAccount=" + toAccount
                 + ", amount=" + amount + ", remarks=" + remarks + ", otp=" + otp + ", transactionDate="
                 + transactionDate + "]";
+    }
+    public FundTransferEntity(long id, CustomerAccountInfo fromAccount, CustomerAccountInfo toAccount, float amount,
+            String remarks, int otp, Date transactionDate) {
+        super();
+        this.id = id;
+        this.fromAccount = fromAccount;
+        this.toAccount = toAccount;
+        this.amount = amount;
+        this.remarks = remarks;
+        this.otp = otp;
+        this.transactionDate = transactionDate;
+    }
+    public FundTransferEntity() {
+        super();
+        // TODO Auto-generated constructor stub
     }
 	
 	

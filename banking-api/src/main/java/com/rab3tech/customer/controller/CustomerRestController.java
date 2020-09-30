@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rab3tech.customer.service.CustomerService;
 import com.rab3tech.customer.service.LoginService;
 import com.rab3tech.utils.PasswordGenerator;
+import com.rab3tech.utils.Utils;
 import com.rab3tech.vo.ApplicationResponseVO;
 import com.rab3tech.vo.ChangePasswordRequestVO;
 import com.rab3tech.vo.CustomerVO;
@@ -133,5 +134,11 @@ public class CustomerRestController {
             return "5 THOUSAND";
         }
         return "NA";
+    }
+	
+	@GetMapping("/customer/generateNewOTP")
+    public int genNewOTP() {
+        int n = Utils.genOTP();
+        return n;
     }
 }
